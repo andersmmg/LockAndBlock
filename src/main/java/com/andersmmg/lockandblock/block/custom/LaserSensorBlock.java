@@ -2,23 +2,20 @@ package com.andersmmg.lockandblock.block.custom;
 
 import com.andersmmg.lockandblock.LockAndBlock;
 import com.andersmmg.lockandblock.util.VoxelUtils;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
+import net.minecraft.block.SideShapeType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
@@ -28,8 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LaserSensorBlock extends Block {
-    public static final DirectionProperty FACING = Properties.FACING;
+public class LaserSensorBlock extends LaserBlock {
     public static final BooleanProperty SET = LockAndBlock.SET;
     public static final BooleanProperty POWERED = Properties.POWERED;
     private static final VoxelShape VOXEL_SHAPE = Block.createCuboidShape(6, 6, 14, 10, 10, 16);
@@ -38,33 +34,7 @@ public class LaserSensorBlock extends Block {
 
     public LaserSensorBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(SET, false).with(POWERED, false));
-    }
-
-    private static void spawnParticles(BlockState state, World world, BlockPos pos) {
-        if (!(world instanceof ServerWorld)) return; // Ensure we are on the server side
-
-        Direction direction = state.get(FACING).getOpposite();
-        Direction direction2 = getDirection(state).getOpposite();
-        double d = (double) pos.getX() + 0.5 + 0.0 * (double) direction.getOffsetX() + 0.4 * (double) direction2.getOffsetX();
-        double e = (double) pos.getY() + 0.5 + 0.0 * (double) direction.getOffsetY() + 0.4 * (double) direction2.getOffsetY();
-        double f = (double) pos.getZ() + 0.5 + 0.0 * (double) direction.getOffsetZ() + 0.4 * (double) direction2.getOffsetZ();
-        float steps = 10f;
-        for (int i = 0; i < (int) steps; i++) {
-            ((ServerWorld) world).spawnParticles(
-                    new DustParticleEffect(Vec3d.unpackRgb(0x30BEFF).toVector3f(), (float) 0.5), // Blue color
-                    d + (double) direction.getOffsetX() * (i / steps),
-                    e + (double) direction.getOffsetY() * (i / steps),
-                    f + (double) direction.getOffsetZ() * (i / steps),
-                    1,
-                    0.0, 0.0, 0.0,
-                    0.0
-            );
-        }
-    }
-
-    protected static Direction getDirection(BlockState state) {
-        return state.get(FACING);
+        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(SET, false).with(POWERED, false).with(DISTANCE, 0));
     }
 
     @Override
@@ -89,7 +59,7 @@ public class LaserSensorBlock extends Block {
 
     private boolean shouldPower(World world, BlockPos pos, BlockState state) {
         Direction direction = state.get(LaserSensorBlock.FACING);
-        double distance = LockAndBlock.CONFIG.allowLaserInAir() ? LockAndBlock.CONFIG.maxLaserSensorDistance() + 1 : 0;
+        int distance = LockAndBlock.CONFIG.allowLaserInAir() ? LockAndBlock.CONFIG.maxLaserSensorDistance() + 1 : 0;
 
         for (int i = 1; i <= LockAndBlock.CONFIG.maxLaserSensorDistance() + 1; i++) {
             BlockState blockState = world.getBlockState(pos.offset(direction, i));
@@ -110,10 +80,7 @@ public class LaserSensorBlock extends Block {
             }
         }
 
-        // spawn a line of particles
-        for (int i = 1; i <= distance; i++) {
-            spawnParticles(state, world, pos.offset(direction, i));
-        }
+        updateDistance(state, world, pos, distance);
 
         if (distance == 0) {
             return false;
@@ -145,21 +112,6 @@ public class LaserSensorBlock extends Block {
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
-    }
-
-    @Override
-    public BlockState rotate(BlockState state, BlockRotation rotation) {
-        return state.with(FACING, rotation.rotate(state.get(FACING)));
-    }
-
-    @Override
-    public BlockState mirror(BlockState state, BlockMirror mirror) {
-        return state.rotate(mirror.getRotation(state.get(FACING)));
-    }
-
-    @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return switch (getDirection(state)) {
             case UP -> VOXEL_SHAPE_UP;
@@ -170,11 +122,6 @@ public class LaserSensorBlock extends Block {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, SET, POWERED);
-    }
-
-    @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.getDefaultState().with(FACING, ctx.getSide());
+        builder.add(FACING, SET, POWERED, DISTANCE);
     }
 }

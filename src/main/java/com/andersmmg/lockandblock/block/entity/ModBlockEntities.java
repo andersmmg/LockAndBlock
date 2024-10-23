@@ -20,6 +20,10 @@ public class ModBlockEntities {
             Registry.register(Registries.BLOCK_ENTITY_TYPE, LockAndBlock.id("keypad_be"),
                     FabricBlockEntityTypeBuilder.create(KeypadBlockEntity::new,
                             ModBlocks.KEYPAD).build());
+    public static final BlockEntityType<LaserBlockEntity> LASER_BLOCK_ENTITY =
+            Registry.register(Registries.BLOCK_ENTITY_TYPE, LockAndBlock.id("laser_be"),
+                    FabricBlockEntityTypeBuilder.create(LaserBlockEntity::new,
+                            ModBlocks.REDSTONE_LASER, ModBlocks.LASER_SENSOR, ModBlocks.TRIP_MINE).build());
 
     public static void registerBlockEntities() {
         LockAndBlock.LOGGER.info("Registering Block Entities for " + LockAndBlock.MOD_ID);

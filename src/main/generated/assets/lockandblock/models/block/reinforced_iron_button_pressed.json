@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/button_pressed",
+  "textures": {
+    "texture": "lockandblock:block/reinforced_iron_block"
+  }
+}

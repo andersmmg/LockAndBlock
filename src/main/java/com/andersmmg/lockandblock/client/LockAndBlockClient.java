@@ -12,6 +12,9 @@ public class LockAndBlockClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.FORCEFIELD, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.REINFORCED_IRON_DOOR, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.REINFORCED_IRON_TRAPDOOR, RenderLayer.getCutout());
+
         ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
             if (stack.getItem() instanceof KeycardItem keycardItem) {
                 return keycardItem.getColor(stack);

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "lockandblock:block/reinforced_iron_slab"
+    },
+    "type=double": {
+      "model": "lockandblock:block/reinforced_iron_block"
+    },
+    "type=top": {
+      "model": "lockandblock:block/reinforced_iron_slab_top"
+    }
+  }
+}

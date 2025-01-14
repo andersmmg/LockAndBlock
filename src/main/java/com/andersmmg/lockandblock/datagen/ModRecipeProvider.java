@@ -146,5 +146,92 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .input('a', Items.AMETHYST_SHARD)
                 .criterion("has_item", conditionsFromItem(Blocks.TNT))
                 .offerTo(exporter);
+
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, ModItems.CARBON_POWDER)
+                .input(ItemTags.COALS)
+                .criterion("has_item", conditionsFromItem(Items.COAL))
+                .offerTo(exporter);
+
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, ModItems.REINFORCED_IRON_INGOT)
+                .input(ModItems.CARBON_POWDER)
+                .input(Items.IRON_INGOT)
+                .criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(Items.IRON_INGOT))
+                .offerTo(exporter, "reinforced_iron_ingot_from_carbon");
+
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, ModItems.REINFORCED_IRON_INGOT, 9)
+                .input(ModBlocks.REINFORCED_IRON_BLOCK)
+                .criterion(hasItem(ModBlocks.REINFORCED_IRON_BLOCK), conditionsFromItem(ModBlocks.REINFORCED_IRON_BLOCK))
+                .offerTo(exporter, "reinforced_iron_ingot_from_block");
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.REINFORCED_IRON_BLOCK)
+                .pattern("BBB")
+                .pattern("BBB")
+                .pattern("BBB")
+                .input('B', ModItems.REINFORCED_IRON_INGOT)
+                .criterion(hasItem(ModItems.REINFORCED_IRON_INGOT), conditionsFromItem(ModItems.REINFORCED_IRON_INGOT))
+                .offerTo(exporter);
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.REINFORCED_IRON_STAIRS, 4)
+                .pattern("B  ")
+                .pattern("BB ")
+                .pattern("BBB")
+                .input('B', ModBlocks.REINFORCED_IRON_BLOCK)
+                .criterion(hasItem(ModBlocks.REINFORCED_IRON_BLOCK), conditionsFromItem(ModBlocks.REINFORCED_IRON_BLOCK))
+                .offerTo(exporter);
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.REINFORCED_IRON_SLAB, 6)
+                .pattern("BBB")
+                .input('B', ModBlocks.REINFORCED_IRON_BLOCK)
+                .criterion(hasItem(ModBlocks.REINFORCED_IRON_BLOCK), conditionsFromItem(ModBlocks.REINFORCED_IRON_BLOCK))
+                .offerTo(exporter);
+
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.REINFORCED_IRON_BUTTON)
+                .input(ModBlocks.REINFORCED_IRON_BLOCK)
+                .criterion(hasItem(ModBlocks.REINFORCED_IRON_BLOCK), conditionsFromItem(ModBlocks.REINFORCED_IRON_BLOCK))
+                .offerTo(exporter);
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.REINFORCED_IRON_PRESSURE_PLATE)
+                .pattern("BB")
+                .input('B', ModBlocks.REINFORCED_IRON_BLOCK)
+                .criterion(hasItem(ModBlocks.REINFORCED_IRON_BLOCK), conditionsFromItem(ModBlocks.REINFORCED_IRON_BLOCK))
+                .offerTo(exporter);
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, ModBlocks.REINFORCED_IRON_FENCE, 3)
+                .pattern("BIB")
+                .pattern("BIB")
+                .input('B', ModBlocks.REINFORCED_IRON_BLOCK)
+                .input('I', Items.IRON_INGOT)
+                .criterion(hasItem(ModBlocks.REINFORCED_IRON_BLOCK), conditionsFromItem(ModBlocks.REINFORCED_IRON_BLOCK))
+                .offerTo(exporter);
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.REINFORCED_IRON_FENCE_GATE)
+                .pattern("IBI")
+                .pattern("IBI")
+                .input('B', ModBlocks.REINFORCED_IRON_BLOCK)
+                .input('I', Items.IRON_INGOT)
+                .criterion(hasItem(ModBlocks.REINFORCED_IRON_BLOCK), conditionsFromItem(ModBlocks.REINFORCED_IRON_BLOCK))
+                .offerTo(exporter);
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, ModBlocks.REINFORCED_IRON_WALL, 6)
+                .pattern("BBB")
+                .pattern("BBB")
+                .input('B', ModBlocks.REINFORCED_IRON_BLOCK)
+                .criterion(hasItem(ModBlocks.REINFORCED_IRON_BLOCK), conditionsFromItem(ModBlocks.REINFORCED_IRON_BLOCK))
+                .offerTo(exporter);
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.REINFORCED_IRON_DOOR, 3)
+                .pattern("BB")
+                .pattern("BB")
+                .pattern("BB")
+                .input('B', ModBlocks.REINFORCED_IRON_BLOCK)
+                .criterion(hasItem(ModBlocks.REINFORCED_IRON_BLOCK), conditionsFromItem(ModBlocks.REINFORCED_IRON_BLOCK))
+                .offerTo(exporter);
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.REINFORCED_IRON_TRAPDOOR, 2)
+                .pattern("BBB")
+                .pattern("BBB")
+                .input('B', ModBlocks.REINFORCED_IRON_BLOCK)
+                .criterion(hasItem(ModBlocks.REINFORCED_IRON_BLOCK), conditionsFromItem(ModBlocks.REINFORCED_IRON_BLOCK))
+                .offerTo(exporter);
     }
 }

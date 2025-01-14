@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "lockandblock:block/reinforced_iron_block"
+    }
+  }
+}

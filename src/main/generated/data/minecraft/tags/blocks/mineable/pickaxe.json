@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "lockandblock:reinforced_iron_slab",
+    "lockandblock:reinforced_iron_stairs",
+    "lockandblock:reinforced_iron_wall",
+    "lockandblock:reinforced_iron_fence",
+    "lockandblock:reinforced_iron_fence_gate",
+    "lockandblock:reinforced_iron_button",
+    "lockandblock:reinforced_iron_pressure_plate",
+    "lockandblock:reinforced_iron_block",
+    "lockandblock:reinforced_iron_trapdoor",
+    "lockandblock:reinforced_iron_door"
+  ]
+}

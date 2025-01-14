@@ -31,6 +31,18 @@ public class ModModelProvider extends FabricModelProvider {
         registerMine(blockStateModelGenerator, ModBlocks.LASER_SENSOR);
         registerMine(blockStateModelGenerator, ModBlocks.DETONATOR_MINE);
         registerRotatablePowered(blockStateModelGenerator, ModBlocks.REDSTONE_LASER);
+
+        BlockStateModelGenerator.BlockTexturePool reinforcedIronPool = blockStateModelGenerator.registerCubeAllModelTexturePool(ModBlocks.REINFORCED_IRON_BLOCK);
+        reinforcedIronPool.stairs(ModBlocks.REINFORCED_IRON_STAIRS);
+        reinforcedIronPool.slab(ModBlocks.REINFORCED_IRON_SLAB);
+        reinforcedIronPool.button(ModBlocks.REINFORCED_IRON_BUTTON);
+        reinforcedIronPool.pressurePlate(ModBlocks.REINFORCED_IRON_PRESSURE_PLATE);
+        reinforcedIronPool.fence(ModBlocks.REINFORCED_IRON_FENCE);
+        reinforcedIronPool.fenceGate(ModBlocks.REINFORCED_IRON_FENCE_GATE);
+        reinforcedIronPool.wall(ModBlocks.REINFORCED_IRON_WALL);
+
+        blockStateModelGenerator.registerDoor(ModBlocks.REINFORCED_IRON_DOOR);
+        blockStateModelGenerator.registerTrapdoor(ModBlocks.REINFORCED_IRON_TRAPDOOR);
     }
 
     @Override
@@ -38,6 +50,8 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModItems.KEYCARD, Models.GENERATED);
         itemModelGenerator.register(ModItems.GUIDEBOOK, Models.GENERATED);
         itemModelGenerator.register(ModItems.REMOTE_DETONATOR, Models.GENERATED);
+        itemModelGenerator.register(ModItems.CARBON_POWDER, Models.GENERATED);
+        itemModelGenerator.register(ModItems.REINFORCED_IRON_INGOT, Models.GENERATED);
     }
 
     @SuppressWarnings("SameParameterValue")

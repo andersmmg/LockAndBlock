@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lockandblock:reinforced_iron_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "lockandblock:reinforced_iron_ingot"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/fence_inventory",
+  "textures": {
+    "texture": "lockandblock:block/reinforced_iron_block"
+  }
+}

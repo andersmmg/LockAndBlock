@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "minecraft:coals"
+    }
+  ],
+  "result": {
+    "item": "lockandblock:carbon_powder"
+  }
+}

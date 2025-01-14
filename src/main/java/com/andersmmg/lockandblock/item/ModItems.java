@@ -13,6 +13,8 @@ public class ModItems {
     public static final Item KEYCARD = registerItem("keycard", new KeycardItem(new OwoItemSettings().maxCount(1).group(ModItemGroups.LOCKBLOCK_GROUP)));
     public static final Item GUIDEBOOK = LavenderBookItem.registerForBook(LockAndBlock.id("guidebook"), new OwoItemSettings().maxCount(1).group(ModItemGroups.LOCKBLOCK_GROUP));
     public static final Item REMOTE_DETONATOR = registerItem("remote_detonator", new RemoteDetonatorItem(new OwoItemSettings().maxCount(1).group(ModItemGroups.LOCKBLOCK_GROUP)));
+    public static final Item REINFORCED_IRON_INGOT = registerItem("reinforced_iron_ingot", new Item(new OwoItemSettings().maxCount(64).group(ModItemGroups.LOCKBLOCK_GROUP)));
+    public static final Item CARBON_POWDER = registerItem("carbon_powder", new Item(new OwoItemSettings().maxCount(64).group(ModItemGroups.LOCKBLOCK_GROUP)));
 
     @SuppressWarnings("SameParameterValue")
     private static Item registerItem(String name, Item item) {

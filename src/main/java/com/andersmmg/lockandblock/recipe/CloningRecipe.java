@@ -7,19 +7,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class CloningRecipe implements CraftingRecipe {
+    public final Map<Integer, Integer> requiredIngredients;
     private final Identifier id;
     private final String group;
     private final ItemStack source;
-    public final Map<Integer, Integer> requiredIngredients;
 
     public CloningRecipe(Identifier id, String group, ItemStack source, Map<Integer, Integer> requiredIngredients) {
         this.id = id;

@@ -29,15 +29,15 @@ public class DetonatorMineBlock extends Block {
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(SET, false));
     }
 
+    protected static Direction getDirection(BlockState state) {
+        return state.get(FACING);
+    }
+
     public void detonate(World world, BlockPos pos) {
         if (world.isClient)
             return;
         world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 3.0f, World.ExplosionSourceType.NONE);
         world.removeBlock(pos, false);
-    }
-
-    protected static Direction getDirection(BlockState state) {
-        return state.get(FACING);
     }
 
     @Override

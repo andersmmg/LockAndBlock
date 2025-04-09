@@ -41,6 +41,10 @@ public class ProxMineBlock extends Block {
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(SET, false));
     }
 
+    protected static Direction getDirection(BlockState state) {
+        return state.get(FACING);
+    }
+
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
@@ -60,20 +64,16 @@ public class ProxMineBlock extends Block {
                 world.setBlockState(pos, state.with(SET, true), 3);
             }
         }
+        assert world != null;
         world.scheduleBlockTick(pos, this, 3, TickPriority.byIndex(1));
     }
 
+    @SuppressWarnings("unused")
     private boolean shouldPower(World world, BlockPos pos, BlockState state) {
-        Direction direction = state.get(ProxMineBlock.FACING);
-//        BlockPos frontPos = pos.offset(direction);
         Box detectionBox = new Box(pos).expand(2.0f);
 
         List<PlayerEntity> players = world.getEntitiesByClass(PlayerEntity.class, detectionBox, player -> true);
         return !players.isEmpty();
-    }
-
-    protected static Direction getDirection(BlockState state) {
-        return state.get(FACING);
     }
 
     @Override

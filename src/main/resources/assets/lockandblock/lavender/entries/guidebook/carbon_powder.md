@@ -8,7 +8,9 @@
   ]
 }
 ```
-A fine powder made from coal, used in crafting reinforced materials. Essential for creating [reinforced iron ingots](^lockandblock:reinforced_iron_ingot), which are used in various security applications.
+
+A fine powder made from coal, used in crafting reinforced materials. Essential for
+creating [reinforced iron ingots](^lockandblock:reinforced_iron_ingot), which are used in various security applications.
 
 ;;;;;
 

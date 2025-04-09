@@ -8,7 +8,9 @@
   ]
 }
 ```
-A stronger variant of iron, created by combining iron with [carbon powder](^lockandblock:carbon_powder). Used to create various security-focused blocks and items.
+
+A stronger variant of iron, created by combining iron with [carbon powder](^lockandblock:carbon_powder). Used to create
+various security-focused blocks and items.
 
 ;;;;;
 

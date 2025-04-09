@@ -58,6 +58,10 @@ public class TeslaCoilBlock extends Block {
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(POWERED, false));
     }
 
+    protected static Direction getDirection(BlockState state) {
+        return state.get(FACING);
+    }
+
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
@@ -94,10 +98,6 @@ public class TeslaCoilBlock extends Block {
             }
 
         }
-    }
-
-    protected static Direction getDirection(BlockState state) {
-        return state.get(FACING);
     }
 
     @Override

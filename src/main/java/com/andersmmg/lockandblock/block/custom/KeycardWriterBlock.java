@@ -38,11 +38,14 @@ public class KeycardWriterBlock extends Block {
             Block.createCuboidShape(3, 2, 8, 13, 4, 9),
             Block.createCuboidShape(3, 2, 6, 13, 4, 7)
     ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get();
-    ;
 
     public KeycardWriterBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
+    }
+
+    protected static Direction getDirection(BlockState state) {
+        return state.get(FACING);
     }
 
     @Override
@@ -61,10 +64,6 @@ public class KeycardWriterBlock extends Block {
             return ActionResult.SUCCESS;
         }
         return ActionResult.FAIL;
-    }
-
-    protected static Direction getDirection(BlockState state) {
-        return state.get(FACING);
     }
 
     @Override

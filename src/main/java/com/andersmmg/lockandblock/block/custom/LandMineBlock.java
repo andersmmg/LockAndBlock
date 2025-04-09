@@ -39,6 +39,10 @@ public class LandMineBlock extends Block {
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(SET, false));
     }
 
+    protected static Direction getDirection(BlockState state) {
+        return state.get(FACING);
+    }
+
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
@@ -58,6 +62,7 @@ public class LandMineBlock extends Block {
                 world.setBlockState(pos, state.with(SET, true), 3);
             }
         }
+        assert world != null;
         world.scheduleBlockTick(pos, this, 3, TickPriority.byIndex(1));
     }
 
@@ -69,15 +74,12 @@ public class LandMineBlock extends Block {
         world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 1.5f, World.ExplosionSourceType.BLOCK);
     }
 
+    @SuppressWarnings("unused")
     private boolean shouldPower(World world, BlockPos pos, BlockState state) {
         Box detectionBox = new Box(pos);
 
         List<LivingEntity> entities = world.getEntitiesByClass(LivingEntity.class, detectionBox, player -> true);
         return !entities.isEmpty();
-    }
-
-    protected static Direction getDirection(BlockState state) {
-        return state.get(FACING);
     }
 
     @Override

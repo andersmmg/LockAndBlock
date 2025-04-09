@@ -19,7 +19,8 @@
 ```
 
 **Reinforced Iron Blocks**
-All reinforced iron blocks have significantly higher blast resistance than their regular iron counterparts, making them ideal for secure builds.
+All reinforced iron blocks have significantly higher blast resistance than their regular iron counterparts, making them
+ideal for secure builds.
 
 ;;;;;
 

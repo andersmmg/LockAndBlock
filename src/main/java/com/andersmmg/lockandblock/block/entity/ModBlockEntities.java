@@ -8,6 +8,10 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 
 public class ModBlockEntities {
+    public static void registerBlockEntities() {
+        LockAndBlock.LOGGER.info("Registering Block Entities for " + LockAndBlock.MOD_ID);
+    }
+
     public static final BlockEntityType<KeycardReaderBlockEntity> KEYCARD_READER_BLOCK_ENTITY =
             Registry.register(Registries.BLOCK_ENTITY_TYPE, LockAndBlock.id("keycard_reader_be"),
                     FabricBlockEntityTypeBuilder.create(KeycardReaderBlockEntity::new,
@@ -29,7 +33,5 @@ public class ModBlockEntities {
                     FabricBlockEntityTypeBuilder.create(LockBlockEntity::new,
                             ModBlocks.LOCK_BLOCK, ModBlocks.REINFORCED_IRON_DOOR).build());
 
-    public static void registerBlockEntities() {
-        LockAndBlock.LOGGER.info("Registering Block Entities for " + LockAndBlock.MOD_ID);
-    }
+
 }

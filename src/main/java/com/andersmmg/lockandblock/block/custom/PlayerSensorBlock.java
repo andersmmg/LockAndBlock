@@ -41,6 +41,10 @@ public class PlayerSensorBlock extends Block {
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(POWERED, false));
     }
 
+    protected static Direction getDirection(BlockState state) {
+        return state.get(FACING);
+    }
+
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
@@ -57,6 +61,7 @@ public class PlayerSensorBlock extends Block {
                 world.updateNeighborsAlways(pos.down(), state.getBlock());
             }
         }
+        assert world != null;
         world.scheduleBlockTick(pos, this, 3, TickPriority.byIndex(1));
     }
 
@@ -82,10 +87,6 @@ public class PlayerSensorBlock extends Block {
     @Override
     public boolean emitsRedstonePower(BlockState state) {
         return true;
-    }
-
-    protected static Direction getDirection(BlockState state) {
-        return state.get(FACING);
     }
 
     @Override

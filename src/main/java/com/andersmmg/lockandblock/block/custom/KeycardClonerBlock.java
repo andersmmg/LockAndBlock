@@ -36,11 +36,14 @@ public class KeycardClonerBlock extends BlockWithEntity {
             Block.createCuboidShape(3, 2, 3, 4, 4, 13),
             Block.createCuboidShape(5, 2, 3, 6, 4, 13)
     ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get();
-    ;
 
     public KeycardClonerBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
+    }
+
+    protected static Direction getDirection(BlockState state) {
+        return state.get(FACING);
     }
 
     @Override
@@ -86,10 +89,6 @@ public class KeycardClonerBlock extends BlockWithEntity {
             }
         }
         return ActionResult.FAIL;
-    }
-
-    protected static Direction getDirection(BlockState state) {
-        return state.get(FACING);
     }
 
     @Override

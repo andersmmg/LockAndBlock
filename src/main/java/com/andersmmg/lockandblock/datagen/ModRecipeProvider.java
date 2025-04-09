@@ -233,5 +233,21 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .input('B', ModBlocks.REINFORCED_IRON_BLOCK)
                 .criterion(hasItem(ModBlocks.REINFORCED_IRON_BLOCK), conditionsFromItem(ModBlocks.REINFORCED_IRON_BLOCK))
                 .offerTo(exporter);
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModItems.KEY, 1)
+                .pattern("g")
+                .pattern("g")
+                .input('g', Items.GOLD_INGOT)
+                .criterion(hasItem(Items.GOLD_INGOT), conditionsFromItem(Items.GOLD_INGOT))
+                .offerTo(exporter);
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.LOCK_BLOCK, 2)
+                .pattern("BBB")
+                .pattern("BRB")
+                .pattern("BBB")
+                .input('B', ModBlocks.REINFORCED_IRON_BLOCK)
+                .input('R', Items.REDSTONE)
+                .criterion(hasItem(ModBlocks.REINFORCED_IRON_BLOCK), conditionsFromItem(ModBlocks.REINFORCED_IRON_BLOCK))
+                .offerTo(exporter);
     }
 }

@@ -1,6 +1,7 @@
 package com.andersmmg.lockandblock.item;
 
 import com.andersmmg.lockandblock.LockAndBlock;
+import com.andersmmg.lockandblock.item.custom.KeyItem;
 import com.andersmmg.lockandblock.item.custom.KeycardItem;
 import com.andersmmg.lockandblock.item.custom.RemoteDetonatorItem;
 import io.wispforest.lavender.book.LavenderBookItem;
@@ -15,6 +16,7 @@ public class ModItems {
     public static final Item REMOTE_DETONATOR = registerItem("remote_detonator", new RemoteDetonatorItem(new OwoItemSettings().maxCount(1).group(ModItemGroups.LOCKBLOCK_GROUP)));
     public static final Item REINFORCED_IRON_INGOT = registerItem("reinforced_iron_ingot", new Item(new OwoItemSettings().maxCount(64).group(ModItemGroups.LOCKBLOCK_GROUP)));
     public static final Item CARBON_POWDER = registerItem("carbon_powder", new Item(new OwoItemSettings().maxCount(64).group(ModItemGroups.LOCKBLOCK_GROUP)));
+    public static final Item KEY = registerItem("key", new KeyItem(new OwoItemSettings().maxCount(1).group(ModItemGroups.LOCKBLOCK_GROUP)));
 
     @SuppressWarnings("SameParameterValue")
     private static Item registerItem(String name, Item item) {

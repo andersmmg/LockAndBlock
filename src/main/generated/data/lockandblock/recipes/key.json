@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "g": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "pattern": [
+    "g",
+    "g"
+  ],
+  "result": {
+    "item": "lockandblock:key"
+  },
+  "show_notification": true
+}

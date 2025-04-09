@@ -34,6 +34,8 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
         addDrop(ModBlocks.REINFORCED_IRON_BUTTON);
         addDrop(ModBlocks.REINFORCED_IRON_PRESSURE_PLATE);
 
+        addDrop(ModBlocks.LOCK_BLOCK);
+
         addDrop(ModBlocks.REINFORCED_IRON_DOOR, doorDrops(ModBlocks.REINFORCED_IRON_DOOR));
         addDrop(ModBlocks.REINFORCED_IRON_SLAB, slabDrops(ModBlocks.REINFORCED_IRON_SLAB));
     }

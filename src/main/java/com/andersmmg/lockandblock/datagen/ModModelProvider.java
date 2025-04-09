@@ -6,6 +6,7 @@ import com.andersmmg.lockandblock.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.data.client.*;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
@@ -32,6 +33,8 @@ public class ModModelProvider extends FabricModelProvider {
         registerMine(blockStateModelGenerator, ModBlocks.DETONATOR_MINE);
         registerRotatablePowered(blockStateModelGenerator, ModBlocks.REDSTONE_LASER);
 
+        registerLockBlock(blockStateModelGenerator, ModBlocks.LOCK_BLOCK);
+
         BlockStateModelGenerator.BlockTexturePool reinforcedIronPool = blockStateModelGenerator.registerCubeAllModelTexturePool(ModBlocks.REINFORCED_IRON_BLOCK);
         reinforcedIronPool.stairs(ModBlocks.REINFORCED_IRON_STAIRS);
         reinforcedIronPool.slab(ModBlocks.REINFORCED_IRON_SLAB);
@@ -52,6 +55,16 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModItems.REMOTE_DETONATOR, Models.GENERATED);
         itemModelGenerator.register(ModItems.CARBON_POWDER, Models.GENERATED);
         itemModelGenerator.register(ModItems.REINFORCED_IRON_INGOT, Models.GENERATED);
+        itemModelGenerator.register(ModItems.KEY, Models.GENERATED);
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private void registerLockBlock(BlockStateModelGenerator blockStateModelGenerator, Block block) {
+        TextureMap textureMap = (new TextureMap()).put(TextureKey.ALL, TextureMap.getId(ModBlocks.REINFORCED_IRON_BLOCK)).put(TextureKey.FRONT, TextureMap.getSubId(block, "_front"));
+        Identifier identifier = Models.ORIENTABLE.upload(block, textureMap, blockStateModelGenerator.modelCollector);
+        blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block)
+                .coordinate(BlockStateModelGenerator.createBooleanModelMap(Properties.POWERED, identifier, identifier))
+                .coordinate(BlockStateModelGenerator.createNorthDefaultHorizontalRotationStates()));
     }
 
     @SuppressWarnings("SameParameterValue")

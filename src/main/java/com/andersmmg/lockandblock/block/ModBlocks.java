@@ -62,9 +62,12 @@ public class ModBlocks {
             new WallBlock(FabricBlockSettings.copyOf(REINFORCED_IRON_BLOCK)));
 
     public static final Block REINFORCED_IRON_DOOR = registerBlock("reinforced_iron_door",
-            new DoorBlock(FabricBlockSettings.copyOf(REINFORCED_IRON_BLOCK).nonOpaque(), BlockSetType.IRON));
+            new ReinforcedIronDoorBlock(FabricBlockSettings.copyOf(REINFORCED_IRON_BLOCK).nonOpaque(), BlockSetType.IRON));
     public static final Block REINFORCED_IRON_TRAPDOOR = registerBlock("reinforced_iron_trapdoor",
             new TrapdoorBlock(FabricBlockSettings.copyOf(REINFORCED_IRON_BLOCK).nonOpaque(), BlockSetType.IRON));
+
+    public static final Block LOCK_BLOCK = registerBlock("lock_block",
+            new LockBlock(FabricBlockSettings.copyOf(REINFORCED_IRON_BLOCK).nonOpaque()));
 
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);

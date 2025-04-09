@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "lockandblock:block/lock_block_front",
+    "side": "lockandblock:block/reinforced_iron_block",
+    "top": "lockandblock:block/reinforced_iron_block"
+  }
+}

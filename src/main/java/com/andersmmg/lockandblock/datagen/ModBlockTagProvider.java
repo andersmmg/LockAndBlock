@@ -25,7 +25,8 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(ModBlocks.REINFORCED_IRON_PRESSURE_PLATE)
                 .add(ModBlocks.REINFORCED_IRON_BLOCK)
                 .add(ModBlocks.REINFORCED_IRON_TRAPDOOR)
-                .add(ModBlocks.REINFORCED_IRON_DOOR);
+                .add(ModBlocks.REINFORCED_IRON_DOOR)
+                .add(ModBlocks.LOCK_BLOCK);
 
         getOrCreateTagBuilder(BlockTags.NEEDS_DIAMOND_TOOL)
                 .add(ModBlocks.REINFORCED_IRON_SLAB)
@@ -37,7 +38,8 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(ModBlocks.REINFORCED_IRON_PRESSURE_PLATE)
                 .add(ModBlocks.REINFORCED_IRON_BLOCK)
                 .add(ModBlocks.REINFORCED_IRON_TRAPDOOR)
-                .add(ModBlocks.REINFORCED_IRON_DOOR);
+                .add(ModBlocks.REINFORCED_IRON_DOOR)
+                .add(ModBlocks.LOCK_BLOCK);
 
         getOrCreateTagBuilder(BlockTags.DOORS)
                 .add(ModBlocks.REINFORCED_IRON_DOOR);

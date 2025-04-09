@@ -10,6 +10,7 @@
     "lockandblock:reinforced_iron_pressure_plate",
     "lockandblock:reinforced_iron_block",
     "lockandblock:reinforced_iron_trapdoor",
-    "lockandblock:reinforced_iron_door"
+    "lockandblock:reinforced_iron_door",
+    "lockandblock:lock_block"
   ]
 }

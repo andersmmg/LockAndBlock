@@ -1,0 +1,13 @@
+{
+  "type": "lockandblock:cloning",
+  "group": "cloning",
+  "source": {
+    "item": "lockandblock:key"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:gold_ingot",
+      "count": 2
+    }
+  ]
+}

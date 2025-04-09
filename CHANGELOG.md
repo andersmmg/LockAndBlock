@@ -15,6 +15,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
+## [0.7.0] - 2025-04-09
+
+### Added
+
+- Reinforced iron blocks
+- Keys & lock blocks
+
+### Changed
+
+- Added reinforced iron listings to guidebook
+
 ## [0.6.1] - 2024-10-22
 
 ### Fixed
@@ -110,7 +121,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Keycard writer
 - Keycard cloner
 
-[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.6.1...HEAD
+[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.7.0...HEAD
+
+[0.7.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.6.1...v0.7.0
 [0.6.1]: https://github.com/andersmmg/LockAndBlock/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.5.1...v0.6.0
 [0.5.1]: https://github.com/andersmmg/LockAndBlock/compare/v0.5.0...v0.5.1

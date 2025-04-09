@@ -1,7 +1,6 @@
 package com.andersmmg.lockandblock.block.custom;
 
 import com.andersmmg.lockandblock.LockAndBlock;
-import com.andersmmg.lockandblock.block.ModBlocks;
 import com.andersmmg.lockandblock.block.entity.LockBlockEntity;
 import com.andersmmg.lockandblock.item.ModItems;
 import com.andersmmg.lockandblock.item.custom.KeyItem;
@@ -10,7 +9,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -18,7 +16,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
-import net.minecraft.world.tick.TickPriority;
 import org.jetbrains.annotations.Nullable;
 
 public class ReinforcedIronDoorBlock extends DoorBlock implements BlockEntityProvider {
@@ -36,15 +33,8 @@ public class ReinforcedIronDoorBlock extends DoorBlock implements BlockEntityPro
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof LockBlockEntity lockBlockEntity) {
                 if (lockBlockEntity.hasUuid()) {
-                    if (KeyItem.hasUuid(stack)) {
-                        if (lockBlockEntity.getUuid().equals(KeyItem.getUuid(stack))) {
-                            return this.activate(state, world, pos, player);
-                        } else {
-                            if (!world.isClient) {
-//                                world.playSound(null, pos, ModSounds.BEEP_ERROR, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                                player.sendMessage(LockAndBlock.langText("wrong_key"), true);
-                            }
-                        }
+                    if (lockBlockEntity.checkKey(stack)) {
+                        return this.activate(state, world, pos, player);
                     } else {
                         if (!world.isClient) {
 //                            world.playSound(null, pos, ModSounds.BEEP_ERROR, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -77,17 +67,17 @@ public class ReinforcedIronDoorBlock extends DoorBlock implements BlockEntityPro
     }
 
     private ActionResult activate(BlockState state, World world, BlockPos pos, PlayerEntity player) {
-        state = (BlockState)state.cycle(OPEN);
+        state = state.cycle(OPEN);
         world.setBlockState(pos, state, 10);
         world.emitGameEvent(player, this.isOpen(state) ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
-        this.playOpenCloseSound(player, world, pos, (Boolean)state.get(OPEN));
+        this.playOpenCloseSound(player, world, pos, state.get(OPEN));
         return ActionResult.success(world.isClient);
     }
 
     @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
         if (!world.isClient) {
-            if (sourceBlock instanceof LockBlock || sourceBlock instanceof KeycardReaderBlock) {
+            if (sourceBlock instanceof LockBlock || sourceBlock instanceof KeycardReaderBlock || sourceBlock instanceof ReinforcedIronDoorBlock) {
                 super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
             }
         }

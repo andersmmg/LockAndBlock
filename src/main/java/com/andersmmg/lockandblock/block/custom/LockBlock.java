@@ -4,7 +4,6 @@ import com.andersmmg.lockandblock.LockAndBlock;
 import com.andersmmg.lockandblock.block.entity.LockBlockEntity;
 import com.andersmmg.lockandblock.item.ModItems;
 import com.andersmmg.lockandblock.item.custom.KeyItem;
-import com.andersmmg.lockandblock.sounds.ModSounds;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -15,7 +14,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
@@ -52,15 +50,8 @@ public class LockBlock extends BlockWithEntity {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof LockBlockEntity lockBlockEntity) {
                 if (lockBlockEntity.hasUuid()) {
-                    if (KeyItem.hasUuid(stack)) {
-                        if (lockBlockEntity.getUuid().equals(KeyItem.getUuid(stack))) {
-                            return this.activate(state, world, pos);
-                        } else {
-                            if (!world.isClient) {
-//                                world.playSound(null, pos, ModSounds.BEEP_ERROR, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                                player.sendMessage(LockAndBlock.langText("wrong_key"), true);
-                            }
-                        }
+                    if (lockBlockEntity.checkKey(stack)) {
+                        return this.activate(state, world, pos);
                     } else {
                         if (!world.isClient) {
 //                            world.playSound(null, pos, ModSounds.BEEP_ERROR, SoundCategory.BLOCKS, 1.0F, 1.0F);

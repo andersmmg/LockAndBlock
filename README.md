@@ -20,8 +20,11 @@ Lock & Block introduces fun and creative security features to protect your Minec
 - **Force fields:** Create an unbreakable wall that you can disable and enable at will
 - **Mines:** Protect you stuff with explosives, using laser trip mines, land mines, and proximity mines
 - **Player Sensor:** Detect when a player is near and trigger a redstone contraption
+- **Detonator Mine:** Use a detonator to remotely detonate land mines
 - **Laser Sensor:** Detect when players or entities touch a laser with a redstone signal
 - **Redstone Laser:** Protect an area with painful lasers
+- **Reinforced Iron:** Reinforced iron blocks are much harder to break than iron
+- **Keys and locks** Lock reinforced iron door with keys, and activate redstone with keys
 
 ### Requirements:
 
@@ -39,8 +42,7 @@ Lock & Block introduces fun and creative security features to protect your Minec
 
 ### Planned Possible Features:
 
-- Lockable doors
-- Remotely triggered mines
+- Some kind of security cameras
 
 Please note that these features are planned possibilities and not guaranteed. As a solo developer, I'll do my best to
 implement them, but development priorities may change.

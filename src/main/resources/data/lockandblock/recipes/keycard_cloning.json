@@ -12,6 +12,10 @@
     {
       "item": "minecraft:redstone",
       "count": 1
+    },
+    {
+      "item": "minecraft:iron_nugget",
+      "count": 1
     }
   ]
 }

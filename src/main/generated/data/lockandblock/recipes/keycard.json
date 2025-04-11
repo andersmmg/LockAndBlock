@@ -6,10 +6,10 @@
       "item": "minecraft:paper"
     },
     {
-      "item": "minecraft:black_dye"
+      "item": "minecraft:redstone"
     },
     {
-      "item": "minecraft:redstone"
+      "item": "minecraft:iron_nugget"
     }
   ],
   "result": {

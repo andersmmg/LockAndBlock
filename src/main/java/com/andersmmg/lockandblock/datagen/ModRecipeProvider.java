@@ -77,8 +77,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .offerTo(exporter);
         ShapelessRecipeJsonBuilder.create(RecipeCategory.TOOLS, ModItems.KEYCARD)
                 .input(Items.PAPER)
-                .input(Items.BLACK_DYE)
                 .input(Items.REDSTONE)
+                .input(Items.IRON_NUGGET)
                 .criterion("has_item", conditionsFromItem(Items.PAPER))
                 .offerTo(exporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.PLAYER_SENSOR)

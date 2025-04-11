@@ -47,10 +47,11 @@ public class CloningRecipeSerializer implements RecipeSerializer<CloningRecipe> 
         Map<Integer, Integer> requiredIngredients = new HashMap<>();
         int ingredientCount = buf.readInt();
         for (int i = 0; i < ingredientCount; i++) {
-            ItemStack ingredient = buf.readItemStack();
-            Integer rawId = Item.getRawId(ingredient.getItem());
-            int count = buf.readInt();
-            requiredIngredients.put(rawId, count);
+            String ingredientId = buf.readString(32767);
+            int ingredientCountRaw = buf.readInt();
+            ItemStack ingredientStack = new ItemStack(Registries.ITEM.get(new Identifier(ingredientId)), ingredientCountRaw);
+            Integer rawId = Item.getRawId(ingredientStack.getItem());
+            requiredIngredients.put(rawId, ingredientCountRaw);
         }
 
         return new CloningRecipe(id, group, source, requiredIngredients);
@@ -64,7 +65,7 @@ public class CloningRecipeSerializer implements RecipeSerializer<CloningRecipe> 
 
         buf.writeInt(recipe.requiredIngredients.size());
         for (Map.Entry<Integer, Integer> entry : recipe.requiredIngredients.entrySet()) {
-            buf.writeInt(entry.getKey());
+            buf.writeString(Registries.ITEM.getId(Item.byRawId(entry.getKey())).toString());
             buf.writeInt(entry.getValue());
         }
     }

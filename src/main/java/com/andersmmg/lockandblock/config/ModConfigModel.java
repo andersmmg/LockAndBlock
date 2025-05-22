@@ -24,6 +24,8 @@ public class ModConfigModel {
     public int maxLaserSensorDistance = 10;
     @RangeConstraint(min = 1.0f, max = 10.0f)
     public float redstoneLaserDamage = 3.0f;
+    @RangeConstraint(min = 1, max = 60)
+    public int redstonePulseLength = 30;
 
     @SuppressWarnings("unused")
     public boolean allowTripMinesAir = true;

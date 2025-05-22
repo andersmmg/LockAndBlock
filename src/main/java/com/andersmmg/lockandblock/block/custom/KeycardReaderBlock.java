@@ -100,7 +100,7 @@ public class KeycardReaderBlock extends BlockWithEntity {
             if (!world.isClient()) {
                 world.playSound(null, pos, ModSounds.BEEP_SUCCESS, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 world.setBlockState(pos, state.with(POWERED, true), 3);
-                world.scheduleBlockTick(pos, this, 20, TickPriority.NORMAL);
+                world.scheduleBlockTick(pos, this, LockAndBlock.CONFIG.redstonePulseLength(), TickPriority.NORMAL);
                 this.updateNeighbors(state, (ServerWorld) world, pos);
             }
             return ActionResult.SUCCESS;

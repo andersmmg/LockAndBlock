@@ -91,7 +91,7 @@ public class LockBlock extends BlockWithEntity {
         if (!state.get(POWERED)) {
             if (!world.isClient()) {
                 world.setBlockState(pos, state.with(POWERED, true), 3);
-                world.scheduleBlockTick(pos, this, 20, TickPriority.NORMAL);
+                world.scheduleBlockTick(pos, this, LockAndBlock.CONFIG.redstonePulseLength(), TickPriority.NORMAL);
                 this.updateNeighbors(state, (ServerWorld) world, pos);
             }
             return ActionResult.SUCCESS;

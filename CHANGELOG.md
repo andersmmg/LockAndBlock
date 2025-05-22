@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
-- Redstone pulse length for keycard reader and lock block increased
+- Redstone pulse length for keypad, keycard reader, and lock block increased
 
 ### Deprecated
 

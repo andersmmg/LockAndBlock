@@ -1,5 +1,6 @@
 package com.andersmmg.lockandblock.block.custom;
 
+import com.andersmmg.lockandblock.LockAndBlock;
 import com.andersmmg.lockandblock.block.entity.KeypadBlockEntity;
 import com.andersmmg.lockandblock.client.screen.KeypadScreen;
 import com.andersmmg.lockandblock.sounds.ModSounds;
@@ -64,7 +65,7 @@ public class KeypadBlock extends BlockWithEntity {
             if (!world.isClient()) {
                 world.playSound(null, pos, ModSounds.BEEP_SUCCESS, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 world.setBlockState(pos, state.with(POWERED, true), 3);
-                world.scheduleBlockTick(pos, this, 30, TickPriority.NORMAL);
+                world.scheduleBlockTick(pos, this, LockAndBlock.CONFIG.redstonePulseLength(), TickPriority.NORMAL);
                 this.updateNeighbors(state, (ServerWorld) world, pos);
             }
             return ActionResult.SUCCESS;

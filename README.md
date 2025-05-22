@@ -29,6 +29,7 @@ Lock & Block introduces fun and creative security features to protect your Minec
 ### Requirements:
 
 - [oωo](https://modrinth.com/mod/owo-lib)
+- [Lavender](https://modrinth.com/mod/lavender)
 
 ### Downloads
 

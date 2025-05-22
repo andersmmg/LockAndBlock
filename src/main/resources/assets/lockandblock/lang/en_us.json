@@ -65,6 +65,7 @@
   "gui.lockandblock.keycard_reader.title": "Keycard Reader",
   "gui.lockandblock.keycard_reader.clear": "Clear",
   "gui.lockandblock.keycard_reader.remove": "Remove",
+  "gui.lockandblock.keycard_reader.toggle": "Toggle",
   "sounds.lockandblock.beep_success": "Successful beep",
   "sounds.lockandblock.beep_error": "Error beep",
   "death.attack.tesla_coil": "%s encountered high voltage",

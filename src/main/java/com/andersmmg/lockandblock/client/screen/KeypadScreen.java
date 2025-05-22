@@ -64,7 +64,7 @@ public class KeypadScreen extends BaseOwoScreen<FlowLayout> {
 
         rootComponent.child(
                 Containers.verticalFlow(Sizing.content(), Sizing.content())
-                        .child(Components.label(LockAndBlock.langText("keypad.title", "gui").formatted(Formatting.BLACK)))
+                        .child(Components.label(LockAndBlock.langText("keypad.title", "gui")))
                         .child(textBox)
                         .gap(5)
                         .child(Containers.verticalFlow(Sizing.content(), Sizing.content())
@@ -119,7 +119,7 @@ public class KeypadScreen extends BaseOwoScreen<FlowLayout> {
                                 )
                         )
                         .padding(Insets.of(10))
-                        .surface(Surface.PANEL)
+                        .surface(Surface.DARK_PANEL)
                         .verticalAlignment(VerticalAlignment.CENTER)
                         .horizontalAlignment(HorizontalAlignment.CENTER)
         );

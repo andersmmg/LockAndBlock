@@ -38,12 +38,16 @@ import org.jetbrains.annotations.Nullable;
 
 public class KeycardReaderBlock extends BlockWithEntity {
     public static final BooleanProperty POWERED = Properties.POWERED;
+    public static final BooleanProperty TOGGLE = BooleanProperty.of("toggle");
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
     private static final VoxelShape VOXEL_SHAPE = Block.createCuboidShape(3, 3, 15, 13, 13, 16);
 
     public KeycardReaderBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(POWERED, false));
+        this.setDefaultState(this.stateManager.getDefaultState()
+                .with(FACING, Direction.NORTH)
+                .with(POWERED, false)
+                .with(TOGGLE, false));
     }
 
     protected static Direction getDirection(BlockState state) {
@@ -53,7 +57,8 @@ public class KeycardReaderBlock extends BlockWithEntity {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         ItemStack stack = player.getStackInHand(hand);
-        if (state.get(POWERED)) {
+        // Only prevent interaction if powered and not in toggle mode
+        if (state.get(POWERED) && !state.get(TOGGLE)) {
             return ActionResult.FAIL;
         }
         if (stack.isOf(ModItems.KEYCARD)) {
@@ -96,16 +101,27 @@ public class KeycardReaderBlock extends BlockWithEntity {
     }
 
     private ActionResult activate(BlockState state, World world, BlockPos pos) {
-        if (!state.get(POWERED)) {
-            if (!world.isClient()) {
-                world.playSound(null, pos, ModSounds.BEEP_SUCCESS, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                world.setBlockState(pos, state.with(POWERED, true), 3);
+        if (!world.isClient()) {
+            BlockState newState;
+            if (state.get(TOGGLE)) {
+                // Toggle the powered state
+                newState = state.cycle(POWERED);
+            } else {
+                // Only activate if not already powered
+                if (state.get(POWERED)) {
+                    return ActionResult.CONSUME;
+                }
+                newState = state.with(POWERED, true);
+                // Schedule the power-off tick only in pulse mode (when TOGGLE is false)
                 world.scheduleBlockTick(pos, this, LockAndBlock.CONFIG.redstonePulseLength(), TickPriority.NORMAL);
-                this.updateNeighbors(state, (ServerWorld) world, pos);
             }
+
+            world.playSound(null, pos, ModSounds.BEEP_SUCCESS, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            world.setBlockState(pos, newState, 3);
+            this.updateNeighbors(state, (ServerWorld) world, pos);
             return ActionResult.SUCCESS;
         }
-        return ActionResult.CONSUME;
+        return ActionResult.SUCCESS;
     }
 
     private void updateNeighbors(BlockState state, ServerWorld world, BlockPos pos) {
@@ -147,13 +163,14 @@ public class KeycardReaderBlock extends BlockWithEntity {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, POWERED);
+        builder.add(FACING, POWERED, TOGGLE);
     }
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        if (state.get(POWERED)) {
-            world.setBlockState(pos, state.cycle(POWERED), 2);
+        // Only turn off if not in toggle mode
+        if (state.get(POWERED) && !state.get(TOGGLE)) {
+            world.setBlockState(pos, state.with(POWERED, false), 2);
             this.updateNeighbors(state, world, pos);
         }
     }
@@ -186,7 +203,10 @@ public class KeycardReaderBlock extends BlockWithEntity {
 
     @Environment(EnvType.CLIENT)
     public void showEditScreen(ItemUsageContext context) {
-        BlockEntity blockEntity = context.getWorld().getBlockEntity(context.getBlockPos());
+        BlockPos pos = context.getBlockPos();
+        World world = context.getWorld();
+        BlockState state = world.getBlockState(pos);
+        BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity == null) {
             return;
         }
@@ -196,7 +216,7 @@ public class KeycardReaderBlock extends BlockWithEntity {
                 return;
             }
             String uuid = KeycardItem.getUuid(context.getPlayer().getStackInHand(context.getHand()));
-            KeycardReaderScreen screen = new KeycardReaderScreen(keycardReaderBlockEntity, uuid);
+            KeycardReaderScreen screen = new KeycardReaderScreen(keycardReaderBlockEntity, uuid, state.get(TOGGLE));
             MinecraftClient.getInstance().setScreen(screen);
         }
     }

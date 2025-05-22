@@ -1,6 +1,7 @@
 package com.andersmmg.lockandblock;
 
 import com.andersmmg.lockandblock.block.ModBlocks;
+import com.andersmmg.lockandblock.block.custom.KeycardReaderBlock;
 import com.andersmmg.lockandblock.block.entity.KeycardReaderBlockEntity;
 import com.andersmmg.lockandblock.block.entity.KeypadBlockEntity;
 import com.andersmmg.lockandblock.block.entity.ModBlockEntities;
@@ -14,6 +15,7 @@ import com.andersmmg.lockandblock.record.KeypadCodePacket;
 import com.andersmmg.lockandblock.sounds.ModSounds;
 import io.wispforest.owo.network.OwoNetChannel;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
@@ -27,6 +29,7 @@ import net.minecraft.state.property.IntProperty;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +40,7 @@ public class LockAndBlock implements ModInitializer {
     public static final ModConfig CONFIG = ModConfig.createAndLoad();
     public static final String CARD_UUID_KEY = "card_uuid";
     public static final String KEY_UUID_KEY = "key_uuid";
+    public static final String TOGGLE_KEY = "toggle";
     public static final String DETONATOR_PAIR_KEY = "paired_blocks";
     public static final BooleanProperty SET = BooleanProperty.of("set");
     public static final IntProperty DISTANCE = IntProperty.of("distance", 0, 255);
@@ -76,12 +80,23 @@ public class LockAndBlock implements ModInitializer {
 
         KEYCARD_READER_CHANNEL.registerServerbound(KeycardReaderPacket.class, (message, access) -> {
             World world = access.player().getServerWorld();
-            BlockEntity blockEntity = world.getBlockEntity(message.pos());
+            BlockPos pos = message.pos();
+            BlockState state = world.getBlockState(pos);
+            BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof KeycardReaderBlockEntity readerBlockEntity && readerBlockEntity.hasUuid() && readerBlockEntity.getUuid().equals(message.uuid())) {
-                if (!message.remove()) {
-                    readerBlockEntity.clearUuid();
-                } else {
-                    world.breakBlock(message.pos(), true);
+                switch (message.type()) {
+                    case CLEAR:
+                        readerBlockEntity.clearUuid();
+                        break;
+                    case REMOVE:
+                        world.breakBlock(pos, true);
+                        break;
+                    case TOGGLE_ON:
+                        world.setBlockState(pos, state.with(KeycardReaderBlock.TOGGLE, true));
+                        break;
+                    case TOGGLE_OFF:
+                        world.setBlockState(pos, state.with(KeycardReaderBlock.TOGGLE, false));
+                        break;
                 }
             }
         });

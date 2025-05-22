@@ -8,10 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Added
 
 - Added config option for redstone pulse length
+- Toggle option to keycard readers
 
 ### Changed
 
 - Redstone pulse length for keypad, keycard reader, and lock block increased
+- Keycard reader and keypad use dark UI panels
 
 ### Deprecated
 

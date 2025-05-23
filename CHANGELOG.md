@@ -7,6 +7,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [0.8.0] - 2025-05-23
+
+### Added
+
 - Config option for redstone pulse length
 - Toggle option to keycard readers and keypads
 
@@ -15,10 +27,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Redstone pulse length for keypad, keycard reader, and lock block increased
 - Keycard reader and keypad use dark UI panels
 - Keypad buttons are a bit wider to be easier to click
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 
@@ -142,8 +150,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Keycard writer
 - Keycard cloner
 
-[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.7.1...HEAD
+[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.8.0...HEAD
 
+[0.8.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.7.1...v0.8.0
 [0.7.1]: https://github.com/andersmmg/LockAndBlock/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.6.1...v0.7.0
 [0.6.1]: https://github.com/andersmmg/LockAndBlock/compare/v0.6.0...v0.6.1

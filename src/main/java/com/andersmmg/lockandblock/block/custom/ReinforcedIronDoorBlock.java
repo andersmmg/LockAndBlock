@@ -77,7 +77,7 @@ public class ReinforcedIronDoorBlock extends DoorBlock implements BlockEntityPro
     @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
         if (!world.isClient) {
-            if (sourceBlock instanceof LockBlock || sourceBlock instanceof KeycardReaderBlock || sourceBlock instanceof ReinforcedIronDoorBlock) {
+            if (sourceBlock instanceof LockBlock || sourceBlock instanceof KeycardReaderBlock || sourceBlock instanceof ReinforcedIronDoorBlock || sourceBlock instanceof KeypadBlock) {
                 super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
             }
         }

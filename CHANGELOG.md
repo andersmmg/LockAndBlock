@@ -21,6 +21,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
+- Fixed keypads unable to open reinforced iron doors
+
 ## [0.7.1] - 2025-04-11
 
 ### Changed

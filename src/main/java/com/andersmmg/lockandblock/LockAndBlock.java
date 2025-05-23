@@ -40,7 +40,6 @@ public class LockAndBlock implements ModInitializer {
     public static final ModConfig CONFIG = ModConfig.createAndLoad();
     public static final String CARD_UUID_KEY = "card_uuid";
     public static final String KEY_UUID_KEY = "key_uuid";
-    public static final String TOGGLE_KEY = "toggle";
     public static final String DETONATOR_PAIR_KEY = "paired_blocks";
     public static final BooleanProperty SET = BooleanProperty.of("set");
     public static final IntProperty DISTANCE = IntProperty.of("distance", 0, 255);

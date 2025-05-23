@@ -21,8 +21,6 @@ import org.lwjgl.glfw.GLFW;
 public class KeypadScreen extends BaseOwoScreen<FlowLayout> {
     private final KeypadBlockEntity blockEntity;
     private final boolean hasCode;
-    private final int BUTTON_WIDTH = 25;
-    private final int BUTTON_GAP = 1;
     private String current_code = "";
     private final TextBoxComponent textBox = Components.textBox(Sizing.fixed(74), current_code);
     private final boolean toggle;
@@ -67,6 +65,8 @@ public class KeypadScreen extends BaseOwoScreen<FlowLayout> {
                 .horizontalAlignment(HorizontalAlignment.CENTER)
                 .verticalAlignment(VerticalAlignment.CENTER);
 
+        int BUTTON_WIDTH = 25;
+        int BUTTON_GAP = 1;
         rootComponent.child(
                 Containers.verticalFlow(Sizing.content(), Sizing.content())
                         .child(Components.label(LockAndBlock.langText("keypad.title", "gui")))

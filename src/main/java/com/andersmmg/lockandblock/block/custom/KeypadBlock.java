@@ -75,7 +75,7 @@ public class KeypadBlock extends BlockWithEntity {
         MinecraftClient.getInstance().setScreen(new KeypadScreen(blockEntity, toggle, unlocked));
     }
 
-    public ActionResult activate(BlockState state, World world, BlockPos pos) {
+    public void activate(BlockState state, World world, BlockPos pos) {
         if (!world.isClient()) {
             BlockState newState;
             if (state.get(TOGGLE)) {
@@ -83,16 +83,14 @@ public class KeypadBlock extends BlockWithEntity {
                 newState = state.with(POWERED, newPowered);
             } else {
                 if (state.get(POWERED)) {
-                    return ActionResult.CONSUME;
+                    return;
                 }
                 newState = state.with(POWERED, true);
                 world.scheduleBlockTick(pos, this, LockAndBlock.CONFIG.redstonePulseLength(), TickPriority.NORMAL);
             }
             world.setBlockState(pos, newState, 3);
             this.updateNeighbors(state, (ServerWorld) world, pos);
-            return ActionResult.SUCCESS;
         }
-        return ActionResult.SUCCESS;
     }
 
     private void updateNeighbors(BlockState state, ServerWorld world, BlockPos pos) {

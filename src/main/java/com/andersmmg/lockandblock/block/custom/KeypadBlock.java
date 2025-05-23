@@ -3,7 +3,6 @@ package com.andersmmg.lockandblock.block.custom;
 import com.andersmmg.lockandblock.LockAndBlock;
 import com.andersmmg.lockandblock.block.entity.KeypadBlockEntity;
 import com.andersmmg.lockandblock.client.screen.KeypadScreen;
-import com.andersmmg.lockandblock.sounds.ModSounds;
 import com.andersmmg.lockandblock.util.VoxelUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -13,7 +12,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
@@ -36,11 +34,16 @@ public class KeypadBlock extends BlockWithEntity {
     public static final BooleanProperty POWERED = Properties.POWERED;
     public static final BooleanProperty SET = BooleanProperty.of("set");
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
+    public static final BooleanProperty TOGGLE = BooleanProperty.of("toggle");
     private static final VoxelShape VOXEL_SHAPE = Block.createCuboidShape(3, 3, 15, 13, 13, 16);
 
     public KeypadBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(POWERED, false).with(SET, false));
+        this.setDefaultState(this.stateManager.getDefaultState()
+                .with(FACING, Direction.NORTH)
+                .with(POWERED, false)
+                .with(SET, false)
+                .with(TOGGLE, false));
     }
 
     protected static Direction getDirection(BlockState state) {
@@ -49,28 +52,47 @@ public class KeypadBlock extends BlockWithEntity {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (world.isClient() && !state.get(POWERED)) {
-            showScreen((KeypadBlockEntity) world.getBlockEntity(pos));
+        if (player.isSneaking()) {
+            if (world.isClient()) {
+                // Sneak to show extra setting
+                showScreen((KeypadBlockEntity) world.getBlockEntity(pos), state.get(TOGGLE), true);
+            }
+            return ActionResult.SUCCESS;
+        }
+
+        if (state.get(POWERED) && !state.get(TOGGLE)) {
+            return ActionResult.FAIL;
+        }
+
+        if (world.isClient()) {
+            showScreen((KeypadBlockEntity) world.getBlockEntity(pos), state.get(TOGGLE), false);
         }
         return ActionResult.SUCCESS;
     }
 
     @Environment(EnvType.CLIENT)
-    private void showScreen(KeypadBlockEntity blockEntity) {
-        MinecraftClient.getInstance().setScreen(new KeypadScreen(blockEntity));
+    private void showScreen(KeypadBlockEntity blockEntity, boolean toggle, boolean unlocked) {
+        MinecraftClient.getInstance().setScreen(new KeypadScreen(blockEntity, toggle, unlocked));
     }
 
     public ActionResult activate(BlockState state, World world, BlockPos pos) {
-        if (!state.get(POWERED)) {
-            if (!world.isClient()) {
-                world.playSound(null, pos, ModSounds.BEEP_SUCCESS, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                world.setBlockState(pos, state.with(POWERED, true), 3);
+        if (!world.isClient()) {
+            BlockState newState;
+            if (state.get(TOGGLE)) {
+                boolean newPowered = !state.get(POWERED);
+                newState = state.with(POWERED, newPowered);
+            } else {
+                if (state.get(POWERED)) {
+                    return ActionResult.CONSUME;
+                }
+                newState = state.with(POWERED, true);
                 world.scheduleBlockTick(pos, this, LockAndBlock.CONFIG.redstonePulseLength(), TickPriority.NORMAL);
-                this.updateNeighbors(state, (ServerWorld) world, pos);
             }
+            world.setBlockState(pos, newState, 3);
+            this.updateNeighbors(state, (ServerWorld) world, pos);
             return ActionResult.SUCCESS;
         }
-        return ActionResult.CONSUME;
+        return ActionResult.SUCCESS;
     }
 
     private void updateNeighbors(BlockState state, ServerWorld world, BlockPos pos) {
@@ -112,15 +134,18 @@ public class KeypadBlock extends BlockWithEntity {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, POWERED, SET);
+        builder.add(FACING, POWERED, SET, TOGGLE);
     }
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (state.get(POWERED)) {
-            world.setBlockState(pos, state.cycle(POWERED), 2);
-            this.updateNeighbors(state, world, pos);
+            if (!state.get(TOGGLE)) {
+                world.setBlockState(pos, state.with(POWERED, false), 2);
+            }
         }
+
+        this.updateNeighbors(state, world, pos);
     }
 
     @Override

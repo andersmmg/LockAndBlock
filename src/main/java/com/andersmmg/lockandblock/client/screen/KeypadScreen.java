@@ -3,6 +3,7 @@ package com.andersmmg.lockandblock.client.screen;
 import com.andersmmg.lockandblock.LockAndBlock;
 import com.andersmmg.lockandblock.block.entity.KeypadBlockEntity;
 import com.andersmmg.lockandblock.record.KeypadCodePacket;
+import com.andersmmg.lockandblock.record.KeypadCodePacketType;
 import io.wispforest.owo.ui.base.BaseOwoScreen;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.component.TextBoxComponent;
@@ -20,14 +21,18 @@ import org.lwjgl.glfw.GLFW;
 public class KeypadScreen extends BaseOwoScreen<FlowLayout> {
     private final KeypadBlockEntity blockEntity;
     private final boolean hasCode;
-    private final int BUTTON_WIDTH = 20;
+    private final int BUTTON_WIDTH = 25;
     private final int BUTTON_GAP = 1;
     private String current_code = "";
-    private final TextBoxComponent textBox = Components.textBox(Sizing.fixed(68), current_code);
+    private final TextBoxComponent textBox = Components.textBox(Sizing.fixed(74), current_code);
+    private final boolean toggle;
+    private final boolean unlocked;
 
-    public KeypadScreen(KeypadBlockEntity entity) {
+    public KeypadScreen(KeypadBlockEntity entity, boolean toggle, boolean unlocked) {
         this.blockEntity = entity;
         this.hasCode = entity.isSet();
+        this.toggle = toggle;
+        this.unlocked = unlocked;
     }
 
     @Override
@@ -117,6 +122,18 @@ public class KeypadScreen extends BaseOwoScreen<FlowLayout> {
                                             checkCode();
                                         }).horizontalSizing(Sizing.fixed(BUTTON_WIDTH)))
                                 )
+                                .child((unlocked || !hasCode) ?
+                                        Containers.horizontalFlow(Sizing.content(), Sizing.content())
+                                                .gap(BUTTON_GAP)
+                                                .child(Components.button(LockAndBlock.langText(toggle ? "keypad.toggle.button.on" : "keypad.toggle.button.off", "gui").formatted(toggle ? Formatting.GREEN : Formatting.RED), button -> {
+                                                    LockAndBlock.KEYPAD_CODE_CHANNEL.clientHandle().send(new KeypadCodePacket(blockEntity.getPos(), current_code, toggle ? KeypadCodePacketType.TOGGLE_OFF : KeypadCodePacketType.TOGGLE_ON));
+                                                    close();
+                                                }).horizontalSizing(Sizing.fixed((BUTTON_WIDTH * 3) + (BUTTON_GAP * 2)))) :
+                                        Components.label(LockAndBlock.langText(toggle ? "keypad.toggle.label.on" : "keypad.toggle.label.off", "gui").formatted(Formatting.GRAY))
+                                                .horizontalTextAlignment(HorizontalAlignment.CENTER)
+                                                .horizontalSizing(Sizing.fixed((BUTTON_WIDTH * 3) + (BUTTON_GAP * 2)))
+                                                .margins(Insets.top(5))
+                                )
                         )
                         .padding(Insets.of(10))
                         .surface(Surface.DARK_PANEL)
@@ -137,7 +154,7 @@ public class KeypadScreen extends BaseOwoScreen<FlowLayout> {
     }
 
     void checkCode() {
-        LockAndBlock.KEYPAD_CODE_CHANNEL.clientHandle().send(new KeypadCodePacket(blockEntity.getPos(), current_code));
+        LockAndBlock.KEYPAD_CODE_CHANNEL.clientHandle().send(new KeypadCodePacket(blockEntity.getPos(), current_code, KeypadCodePacketType.CHECK));
         close();
     }
 

@@ -56,18 +56,25 @@ public class KeypadBlockEntity extends BlockEntity {
         return this.code.equals(code);
     }
 
-    public void testCode(String currentCode) {
+    public boolean testCode(String currentCode, boolean activate) {
         if (getCachedState().getBlock() instanceof KeypadBlock keypadBlock) {
             if (hasCode()) {
                 if (checkCode(currentCode)) {
-                    keypadBlock.activate(getCachedState(), getWorld(), getPos());
+                    if (activate) {
+                        keypadBlock.activate(getCachedState(), getWorld(), getPos());
+                    }
+                    world.playSound(null, getPos(), ModSounds.BEEP_SUCCESS, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    return true;
                 } else {
-                    world.playSound(null, getPos(), ModSounds.BEEP_ERROR, SoundCategory.BLOCKS, 1, 1);
+                    world.playSound(null, getPos(), ModSounds.BEEP_ERROR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    return false;
                 }
             } else {
                 setCode(currentCode);
                 keypadBlock.activate(getCachedState(), getWorld(), getPos());
+                return true;
             }
         }
+        return false;
     }
 }

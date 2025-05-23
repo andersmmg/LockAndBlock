@@ -7,13 +7,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
-- Added config option for redstone pulse length
-- Toggle option to keycard readers
+- Config option for redstone pulse length
+- Toggle option to keycard readers and keypads
 
 ### Changed
 
 - Redstone pulse length for keypad, keycard reader, and lock block increased
 - Keycard reader and keypad use dark UI panels
+- Keypad buttons are a bit wider to be easier to click
 
 ### Deprecated
 
@@ -21,7 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
-- Fixed keypads unable to open reinforced iron doors
+- Keypads were unable to open reinforced iron doors
 
 ## [0.7.1] - 2025-04-11
 

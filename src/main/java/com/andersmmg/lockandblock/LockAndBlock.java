@@ -102,9 +102,25 @@ public class LockAndBlock implements ModInitializer {
         });
         KEYPAD_CODE_CHANNEL.registerServerbound(KeypadCodePacket.class, (message, access) -> {
             World world = access.player().getServerWorld();
-            BlockEntity blockEntity = world.getBlockEntity(message.pos());
+            BlockPos pos = message.pos();
+            BlockState state = world.getBlockState(pos);
+            BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof KeypadBlockEntity keypadBlockEntity) {
-                keypadBlockEntity.testCode(message.code());
+                switch (message.type()) {
+                    case CHECK:
+                        keypadBlockEntity.testCode(message.code(), true);
+                        break;
+                    case TOGGLE_ON:
+                        if (keypadBlockEntity.testCode(message.code(), false)) {
+                            world.setBlockState(pos, state.with(KeycardReaderBlock.TOGGLE, true));
+                        }
+                        break;
+                    case TOGGLE_OFF:
+                        if (keypadBlockEntity.testCode(message.code(), false)) {
+                            world.setBlockState(pos, state.with(KeycardReaderBlock.TOGGLE, false));
+                        }
+                        break;
+                }
             }
         });
     }

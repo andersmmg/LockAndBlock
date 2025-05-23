@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Fixed
 
 - Keypads were unable to open reinforced iron doors
+- Laser sensor and player sensor did not send redstone into attached block
 
 ## [0.7.1] - 2025-04-11
 
@@ -33,6 +34,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Fixed
 
 - Fixed incorrect packet format for recipes
+-
 
 ## [0.7.0] - 2025-04-09
 

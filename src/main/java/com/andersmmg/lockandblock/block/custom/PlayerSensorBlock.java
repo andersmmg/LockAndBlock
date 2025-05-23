@@ -59,6 +59,7 @@ public class PlayerSensorBlock extends Block {
                 world.setBlockState(pos, state.with(Properties.POWERED, shouldPower), 3);
                 state.updateNeighbors(world, pos, 3);
                 world.updateNeighborsAlways(pos.down(), state.getBlock());
+                world.updateNeighborsAlways(pos.offset(getDirection(state).getOpposite()), this);
             }
         }
         assert world != null;

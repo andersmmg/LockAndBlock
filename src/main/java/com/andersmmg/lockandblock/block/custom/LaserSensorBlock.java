@@ -50,6 +50,7 @@ public class LaserSensorBlock extends LaserBlock {
             if (state.get(POWERED) != shouldPower) {
                 world.setBlockState(pos, state.with(POWERED, shouldPower), 3);
                 state.updateNeighbors(world, pos, 3);
+                world.updateNeighborsAlways(pos.offset(getDirection(state).getOpposite()), this);
             }
         } else {
             world.setBlockState(pos, state.with(SET, true), 3);

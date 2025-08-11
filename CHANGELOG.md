@@ -7,13 +7,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- New laser rendering
+- `maxLaserDistance` config for laser distance
+- `laserParticles` config to enable old laser particles
+- `laserCustomRender` config for new rendering
+
 ### Changed
+
+- Default to new laser rendering
+- Increased max pulse length to 255 ticks
+- Lasers are now processed in block entity rather than the block
 
 ### Deprecated
 
+- Laser particles display
+
 ### Removed
 
+- `maxTripMineDistance` config variable
+- `maxLaserSensorDistance` config variable
+- `DISTANCE` block state for lasers
+
 ### Fixed
+
+- Improved laser responsiveness
 
 ## [0.8.0] - 2025-05-23
 

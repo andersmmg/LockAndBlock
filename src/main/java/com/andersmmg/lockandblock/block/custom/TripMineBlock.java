@@ -1,14 +1,13 @@
 package com.andersmmg.lockandblock.block.custom;
 
 import com.andersmmg.lockandblock.LockAndBlock;
+import com.andersmmg.lockandblock.block.entity.LaserBlockEntity;
 import com.andersmmg.lockandblock.util.VoxelUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.block.SideShapeType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -32,7 +31,7 @@ public class TripMineBlock extends LaserBlock {
 
     public TripMineBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(SET, false).with(DISTANCE, 0));
+        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(SET, false));
     }
 
     @Override
@@ -56,42 +55,24 @@ public class TripMineBlock extends LaserBlock {
     }
 
     private boolean shouldPower(World world, BlockPos pos, BlockState state) {
-        Direction direction = state.get(TripMineBlock.FACING);
-        int distance = LockAndBlock.CONFIG.allowTripMinesAir() ? LockAndBlock.CONFIG.maxTripMineDistance() + 1 : 0;
+        if (world.getBlockEntity(pos) instanceof LaserBlockEntity laserBlockEntity) {
+            int distance = laserBlockEntity.currentDistance;
+            Direction direction = state.get(TripMineBlock.FACING);
 
-        for (int i = 1; i <= LockAndBlock.CONFIG.maxTripMineDistance() + 1; i++) {
-            BlockState blockState = world.getBlockState(pos.offset(direction, i));
-            String blockId = Registries.BLOCK.getId(blockState.getBlock()).toString();
-            if (LockAndBlock.CONFIG.laserPassthroughWhitelist().contains(blockId)) {
-                continue;
+            if (distance == 0) {
+                return false;
             }
-            if (blockState.getCameraCollisionShape(world, pos.offset(direction, i), ShapeContext.absent()).isEmpty()) {
-                continue;
-            }
-            if (blockState.isSideSolid(world, pos.offset(direction, i), direction.getOpposite(), SideShapeType.CENTER)) {
-                distance = i;
-                break;
-            }
-            if (blockState.isSideSolid(world, pos.offset(direction, i), direction, SideShapeType.CENTER)) {
-                distance = i + 1;
-                break;
-            }
+
+            // check if there are players in the area
+            double expandOffset = ((double) (distance - 1) / 2.0f);
+            Box detectionBox = new Box(pos).contract(0.5f)
+                    .expand(direction.getOffsetX() * expandOffset, direction.getOffsetY() * expandOffset, direction.getOffsetZ() * expandOffset)
+                    .offset(direction.getOffsetX() * (distance - 1) * 0.5f, direction.getOffsetY() * (distance - 1) * 0.5f, direction.getOffsetZ() * (distance - 1) * 0.5f);
+
+            List<LivingEntity> entities = world.getEntitiesByClass(LivingEntity.class, detectionBox, entity -> true);
+            return !entities.isEmpty();
         }
-
-        updateDistance(state, world, pos, distance);
-
-        if (distance == 0) {
-            return false;
-        }
-
-        // check if there are players in the area
-        double expandOffset = ((double) (distance - 1) / 2.0f);
-        Box detectionBox = new Box(pos).contract(0.5f)
-                .expand(direction.getOffsetX() * expandOffset, direction.getOffsetY() * expandOffset, direction.getOffsetZ() * expandOffset)
-                .offset(direction.getOffsetX() * (distance - 1) * 0.5f, direction.getOffsetY() * (distance - 1) * 0.5f, direction.getOffsetZ() * (distance - 1) * 0.5f);
-
-        List<LivingEntity> entities = world.getEntitiesByClass(LivingEntity.class, detectionBox, entity -> true);
-        return !entities.isEmpty();
+        return false;
     }
 
     @Override
@@ -105,6 +86,6 @@ public class TripMineBlock extends LaserBlock {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, SET, DISTANCE);
+        builder.add(FACING, SET);
     }
 }

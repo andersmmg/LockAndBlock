@@ -1,6 +1,5 @@
 package com.andersmmg.lockandblock.block.custom;
 
-import com.andersmmg.lockandblock.LockAndBlock;
 import com.andersmmg.lockandblock.block.entity.LaserBlockEntity;
 import com.andersmmg.lockandblock.block.entity.ModBlockEntities;
 import net.minecraft.block.Block;
@@ -13,7 +12,6 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
@@ -24,26 +22,19 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class LaserBlock extends BlockWithEntity {
     public static final DirectionProperty FACING = Properties.FACING;
-    public static final IntProperty DISTANCE = LockAndBlock.DISTANCE;
 
     protected LaserBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(DISTANCE, 0));
+        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
     }
 
     public static Direction getDirection(BlockState state) {
         return state.get(FACING);
     }
 
-    void updateDistance(BlockState state, World world, BlockPos pos, int distance) {
-        if (state.get(DISTANCE) != distance) {
-            world.setBlockState(pos, state.with(DISTANCE, distance), 2);
-        }
-    }
-
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, DISTANCE);
+        builder.add(FACING);
     }
 
     @Override

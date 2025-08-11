@@ -7,6 +7,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [0.9.0] - 2025-08-10
+
+### Added
+
 - New laser rendering
 - `maxLaserDistance` config for laser distance
 - `laserParticles` config to enable old laser particles
@@ -167,8 +179,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Keycard writer
 - Keycard cloner
 
-[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.9.0...HEAD
 
+[0.9.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.7.1...v0.8.0
 [0.7.1]: https://github.com/andersmmg/LockAndBlock/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.6.1...v0.7.0

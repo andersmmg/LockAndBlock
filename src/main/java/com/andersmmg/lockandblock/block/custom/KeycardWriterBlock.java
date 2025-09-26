@@ -49,8 +49,8 @@ public class KeycardWriterBlock extends Block {
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        ItemStack stack = player.getStackInHand(hand);
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
         if (stack.isOf(ModItems.KEYCARD)) {
             if (!world.isClient) {
                 if (KeycardItem.hasUuid(stack)) {

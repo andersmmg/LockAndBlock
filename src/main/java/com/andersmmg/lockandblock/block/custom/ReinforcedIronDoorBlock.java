@@ -20,15 +20,15 @@ import org.jetbrains.annotations.Nullable;
 
 public class ReinforcedIronDoorBlock extends DoorBlock implements BlockEntityProvider {
     public ReinforcedIronDoorBlock(Settings settings, BlockSetType blockSetType) {
-        super(settings, blockSetType);
+        super(blockSetType, settings);
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (state.get(POWERED)) {
             return ActionResult.FAIL;
         }
-        ItemStack stack = player.getStackInHand(hand);
+        ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
         if (stack.isOf(ModItems.KEY)) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof LockBlockEntity lockBlockEntity) {

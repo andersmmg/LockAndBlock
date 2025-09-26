@@ -5,6 +5,7 @@ import com.andersmmg.lockandblock.block.entity.KeycardClonerBlockEntity;
 import com.andersmmg.lockandblock.item.ModItems;
 import com.andersmmg.lockandblock.item.custom.KeycardItem;
 import com.andersmmg.lockandblock.util.VoxelUtils;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -47,8 +48,13 @@ public class KeycardClonerBlock extends BlockWithEntity {
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        ItemStack stack = player.getStackInHand(hand);
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return createCodec(KeycardClonerBlock::new);
+    }
+
+    @Override
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
         if (stack.isOf(ModItems.KEYCARD)) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof KeycardClonerBlockEntity keycardClonerBlockEntity) {
@@ -73,7 +79,7 @@ public class KeycardClonerBlock extends BlockWithEntity {
                         }
                     } else {
                         if (!world.isClient)
-                            player.sendMessage(LockAndBlock.langText("card_blank"), true);
+                            player.sendMessage(LockAndBlock.langText("blank_keycard"), true);
                     }
                 }
             }

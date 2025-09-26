@@ -3,8 +3,10 @@ package com.andersmmg.lockandblock.block.custom;
 import com.andersmmg.lockandblock.LockAndBlock;
 import com.andersmmg.lockandblock.block.entity.LaserBlockEntity;
 import com.andersmmg.lockandblock.util.VoxelUtils;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -32,6 +34,11 @@ public class TripMineBlock extends LaserBlock {
     public TripMineBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(SET, false));
+    }
+
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return createCodec(TripMineBlock::new);
     }
 
     @Override

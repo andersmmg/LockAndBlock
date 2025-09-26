@@ -60,7 +60,7 @@ public abstract class LaserBlock extends BlockWithEntity {
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, ModBlockEntities.LASER_BLOCK_ENTITY, LaserBlockEntity::tick);
+        return validateTicker(type, ModBlockEntities.LASER_BLOCK_ENTITY, LaserBlockEntity::tick);
     }
 
     @Override

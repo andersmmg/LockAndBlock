@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    {
+      "item": "lockandblock:reinforced_iron_block"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "lockandblock:reinforced_iron_button"
+  }
+}

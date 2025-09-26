@@ -7,6 +7,7 @@ import com.andersmmg.lockandblock.item.ModItems;
 import com.andersmmg.lockandblock.item.custom.KeycardItem;
 import com.andersmmg.lockandblock.sounds.ModSounds;
 import com.andersmmg.lockandblock.util.VoxelUtils;
+import com.mojang.serialization.MapCodec;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.*;
@@ -55,8 +56,13 @@ public class KeycardReaderBlock extends BlockWithEntity {
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        ItemStack stack = player.getStackInHand(hand);
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return createCodec(KeycardReaderBlock::new);
+    }
+
+    @Override
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
         // Only prevent interaction if powered and not in toggle mode
         if (state.get(POWERED) && !state.get(TOGGLE)) {
             return ActionResult.FAIL;

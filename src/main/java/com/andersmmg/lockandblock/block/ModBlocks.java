@@ -49,22 +49,21 @@ public class ModBlocks {
             new SlabBlock(FabricBlockSettings.copyOf(REINFORCED_IRON_BLOCK)));
 
     public static final Block REINFORCED_IRON_BUTTON = registerBlock("reinforced_iron_button",
-            new ButtonBlock(FabricBlockSettings.copyOf(REINFORCED_IRON_BLOCK), BlockSetType.IRON, 10, true));
+            new ButtonBlock(BlockSetType.IRON, 10, FabricBlockSettings.copyOf(REINFORCED_IRON_BLOCK)));
     public static final Block REINFORCED_IRON_PRESSURE_PLATE = registerBlock("reinforced_iron_pressure_plate",
-            new PressurePlateBlock(PressurePlateBlock.ActivationRule.EVERYTHING,
-                    FabricBlockSettings.copyOf(REINFORCED_IRON_BLOCK), BlockSetType.IRON));
+            new PressurePlateBlock(BlockSetType.IRON, FabricBlockSettings.copyOf(REINFORCED_IRON_BLOCK)));
 
     public static final Block REINFORCED_IRON_FENCE = registerBlock("reinforced_iron_fence",
             new FenceBlock(FabricBlockSettings.copyOf(REINFORCED_IRON_BLOCK)));
     public static final Block REINFORCED_IRON_FENCE_GATE = registerBlock("reinforced_iron_fence_gate",
-            new FenceGateBlock(FabricBlockSettings.copyOf(REINFORCED_IRON_BLOCK), WoodType.ACACIA));
+            new FenceGateBlock(WoodType.ACACIA, FabricBlockSettings.copyOf(REINFORCED_IRON_BLOCK)));
     public static final Block REINFORCED_IRON_WALL = registerBlock("reinforced_iron_wall",
             new WallBlock(FabricBlockSettings.copyOf(REINFORCED_IRON_BLOCK)));
 
     public static final Block REINFORCED_IRON_DOOR = registerBlock("reinforced_iron_door",
             new ReinforcedIronDoorBlock(FabricBlockSettings.copyOf(REINFORCED_IRON_BLOCK).nonOpaque(), BlockSetType.IRON));
     public static final Block REINFORCED_IRON_TRAPDOOR = registerBlock("reinforced_iron_trapdoor",
-            new TrapdoorBlock(FabricBlockSettings.copyOf(REINFORCED_IRON_BLOCK).nonOpaque(), BlockSetType.IRON));
+            new TrapdoorBlock(BlockSetType.IRON, FabricBlockSettings.copyOf(REINFORCED_IRON_BLOCK).nonOpaque()));
 
     public static final Block LOCK_BLOCK = registerBlock("lock_block",
             new LockBlock(FabricBlockSettings.copyOf(REINFORCED_IRON_BLOCK).nonOpaque()));

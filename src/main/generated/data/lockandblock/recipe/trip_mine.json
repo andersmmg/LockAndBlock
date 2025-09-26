@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "G": {
+      "item": "minecraft:green_stained_glass_pane"
+    },
+    "P": {
+      "item": "minecraft:prismarine_shard"
+    },
+    "T": {
+      "item": "minecraft:tnt"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "ii ",
+    "TPG",
+    "ii "
+  ],
+  "result": {
+    "count": 2,
+    "id": "lockandblock:trip_mine"
+  }
+}

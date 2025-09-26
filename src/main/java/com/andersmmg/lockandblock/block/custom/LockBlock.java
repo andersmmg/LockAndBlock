@@ -4,6 +4,7 @@ import com.andersmmg.lockandblock.LockAndBlock;
 import com.andersmmg.lockandblock.block.entity.LockBlockEntity;
 import com.andersmmg.lockandblock.item.ModItems;
 import com.andersmmg.lockandblock.item.custom.KeyItem;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -40,16 +41,21 @@ public class LockBlock extends BlockWithEntity {
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(POWERED, false));
     }
 
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return createCodec(LockBlock::new);
+    }
+
     protected static Direction getDirection(BlockState state) {
         return state.get(FACING);
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (state.get(POWERED)) {
             return ActionResult.FAIL;
         }
-        ItemStack stack = player.getStackInHand(hand);
+        ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
         if (stack.isOf(ModItems.KEY)) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof LockBlockEntity lockBlockEntity) {
@@ -73,6 +79,7 @@ public class LockBlock extends BlockWithEntity {
                     } else {
                         if (!world.isClient) {
                             // encode both
+                            // TODO: not working even though keycards work?
                             String new_uuid = java.util.UUID.randomUUID().toString();
                             KeyItem.setUuid(new_uuid, stack);
                             lockBlockEntity.setUuid(new_uuid);

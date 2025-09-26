@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "lockandblock:reinforced_iron_block"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "BIB",
+    "BIB"
+  ],
+  "result": {
+    "count": 3,
+    "id": "lockandblock:reinforced_iron_fence"
+  }
+}

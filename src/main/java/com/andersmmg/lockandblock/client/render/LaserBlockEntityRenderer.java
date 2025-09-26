@@ -15,11 +15,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
 
 public class LaserBlockEntityRenderer implements BlockEntityRenderer<LaserBlockEntity> {
-    public static final Identifier BEAM_TEXTURE = new Identifier(LockAndBlock.MOD_ID, "textures/entity/laser.png");
+    public static final Identifier BEAM_TEXTURE = Identifier.of(LockAndBlock.MOD_ID, "textures/entity/laser.png");
 
     public LaserBlockEntityRenderer(BlockEntityRendererFactory.Context ignoredContext) {
     }
@@ -59,23 +57,21 @@ public class LaserBlockEntityRenderer implements BlockEntityRenderer<LaserBlockE
 
     private static void renderBeamLayer(MatrixStack matrices, VertexConsumer vertices, float red, float green, float blue, float alpha, int yOffset, int height, float z1, float x2, float x3, float z4) {
         MatrixStack.Entry entry = matrices.peek();
-        Matrix4f matrix4f = entry.getPositionMatrix();
-        Matrix3f matrix3f = entry.getNormalMatrix();
-        renderBeamFace(matrix4f, matrix3f, vertices, red, green, blue, alpha, yOffset, height, (float) 0.0, z1, x2, (float) 0.0);
-        renderBeamFace(matrix4f, matrix3f, vertices, red, green, blue, alpha, yOffset, height, (float) 0.0, z4, x3, (float) 0.0);
-        renderBeamFace(matrix4f, matrix3f, vertices, red, green, blue, alpha, yOffset, height, x2, (float) 0.0, (float) 0.0, z4);
-        renderBeamFace(matrix4f, matrix3f, vertices, red, green, blue, alpha, yOffset, height, x3, (float) 0.0, (float) 0.0, z1);
+        renderBeamFace(entry, vertices, red, green, blue, alpha, yOffset, height, (float) 0.0, z1, x2, (float) 0.0);
+        renderBeamFace(entry, vertices, red, green, blue, alpha, yOffset, height, (float) 0.0, z4, x3, (float) 0.0);
+        renderBeamFace(entry, vertices, red, green, blue, alpha, yOffset, height, x2, (float) 0.0, (float) 0.0, z4);
+        renderBeamFace(entry, vertices, red, green, blue, alpha, yOffset, height, x3, (float) 0.0, (float) 0.0, z1);
     }
 
-    private static void renderBeamFace(Matrix4f positionMatrix, Matrix3f normalMatrix, VertexConsumer vertices, float red, float green, float blue, float alpha, int yOffset, int height, float x1, float z1, float x2, float z2) {
-        renderBeamVertex(positionMatrix, normalMatrix, vertices, red, green, blue, alpha, height, x1, z1, (float) 1.0, (float) 1.0);
-        renderBeamVertex(positionMatrix, normalMatrix, vertices, red, green, blue, alpha, yOffset, x1, z1, (float) 1.0, (float) -1.0);
-        renderBeamVertex(positionMatrix, normalMatrix, vertices, red, green, blue, alpha, yOffset, x2, z2, (float) 0.0, (float) -1.0);
-        renderBeamVertex(positionMatrix, normalMatrix, vertices, red, green, blue, alpha, height, x2, z2, (float) 0.0, (float) 1.0);
+    private static void renderBeamFace(MatrixStack.Entry matrixEntry, VertexConsumer vertices, float red, float green, float blue, float alpha, int yOffset, int height, float x1, float z1, float x2, float z2) {
+        renderBeamVertex(matrixEntry, vertices, red, green, blue, alpha, height, x1, z1, (float) 1.0, (float) 1.0);
+        renderBeamVertex(matrixEntry, vertices, red, green, blue, alpha, yOffset, x1, z1, (float) 1.0, (float) -1.0);
+        renderBeamVertex(matrixEntry, vertices, red, green, blue, alpha, yOffset, x2, z2, (float) 0.0, (float) -1.0);
+        renderBeamVertex(matrixEntry, vertices, red, green, blue, alpha, height, x2, z2, (float) 0.0, (float) 1.0);
     }
 
-    private static void renderBeamVertex(Matrix4f positionMatrix, Matrix3f normalMatrix, VertexConsumer vertices, float red, float green, float blue, float alpha, int y, float x, float z, float u, float v) {
-        vertices.vertex(positionMatrix, x, (float) y, z).color(red, green, blue, alpha).texture(u, v).overlay(OverlayTexture.DEFAULT_UV).light(15728880).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+    private static void renderBeamVertex(MatrixStack.Entry matrixEntry, VertexConsumer vertices, float red, float green, float blue, float alpha, int y, float x, float z, float u, float v) {
+        vertices.vertex(matrixEntry.getPositionMatrix(), x, (float) y, z).color(red, green, blue, alpha).texture(u, v).overlay(OverlayTexture.DEFAULT_UV).light(15728880).normal(matrixEntry, 0.0F, 1.0F, 0.0F);
     }
 
     @Override

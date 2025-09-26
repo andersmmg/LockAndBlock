@@ -7,7 +7,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
+import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
@@ -38,44 +40,54 @@ public class CloningRecipe implements CraftingRecipe {
         return group;
     }
 
+//    @Override
+//    public boolean matches(RecipeInputInventory inventory, World world) {
+//        Map<Integer, Integer> ingredientCounts = new HashMap<>();
+//
+//        for (int i = 0; i < inventory.size(); i++) {
+//            ItemStack stack = inventory.getStack(i);
+//            if (!stack.isEmpty()) {
+//                int rawId = Item.getRawId(stack.getItem());
+//                ingredientCounts.put(rawId, ingredientCounts.getOrDefault(rawId, 0) + 1);
+//            }
+//        }
+//
+//        for (Map.Entry<Integer, Integer> entry : requiredIngredients.entrySet()) {
+//            if (!ingredientCounts.getOrDefault(entry.getKey(), 0).equals(entry.getValue())) {
+//                return false;
+//            }
+//        }
+//
+//        int sourceRawId = Item.getRawId(source.getItem());
+//        if (!ingredientCounts.containsKey(sourceRawId) || ingredientCounts.get(sourceRawId) > 1) {
+//            return false;
+//        }
+//
+//        return ingredientCounts.entrySet().stream()
+//                .allMatch(entry -> requiredIngredients.containsKey(entry.getKey()) || entry.getKey() == sourceRawId);
+//    }
+
+//    @Override
+//    public ItemStack craft(RecipeInputInventory inventory, DynamicRegistryManager registryManager) {
+//        for (int i = 0; i < inventory.size(); i++) {
+//            ItemStack stack = inventory.getStack(i);
+//            if (!stack.isEmpty() && stack.getItem() == source.getItem() && stack.hasNbt()) {
+//                ItemStack clonedItem = source.copy();
+//                clonedItem.setNbt(stack.getNbt());
+//                return clonedItem;
+//            }
+//        }
+//        return ItemStack.EMPTY;
+//    }
+
     @Override
-    public boolean matches(RecipeInputInventory inventory, World world) {
-        Map<Integer, Integer> ingredientCounts = new HashMap<>();
-
-        for (int i = 0; i < inventory.size(); i++) {
-            ItemStack stack = inventory.getStack(i);
-            if (!stack.isEmpty()) {
-                int rawId = Item.getRawId(stack.getItem());
-                ingredientCounts.put(rawId, ingredientCounts.getOrDefault(rawId, 0) + 1);
-            }
-        }
-
-        for (Map.Entry<Integer, Integer> entry : requiredIngredients.entrySet()) {
-            if (!ingredientCounts.getOrDefault(entry.getKey(), 0).equals(entry.getValue())) {
-                return false;
-            }
-        }
-
-        int sourceRawId = Item.getRawId(source.getItem());
-        if (!ingredientCounts.containsKey(sourceRawId) || ingredientCounts.get(sourceRawId) > 1) {
-            return false;
-        }
-
-        return ingredientCounts.entrySet().stream()
-                .allMatch(entry -> requiredIngredients.containsKey(entry.getKey()) || entry.getKey() == sourceRawId);
+    public boolean matches(CraftingRecipeInput input, World world) {
+        return false;
     }
 
     @Override
-    public ItemStack craft(RecipeInputInventory inventory, DynamicRegistryManager registryManager) {
-        for (int i = 0; i < inventory.size(); i++) {
-            ItemStack stack = inventory.getStack(i);
-            if (!stack.isEmpty() && stack.getItem() == source.getItem() && stack.hasNbt()) {
-                ItemStack clonedItem = source.copy();
-                clonedItem.setNbt(stack.getNbt());
-                return clonedItem;
-            }
-        }
-        return ItemStack.EMPTY;
+    public ItemStack craft(CraftingRecipeInput input, RegistryWrapper.WrapperLookup lookup) {
+        return null;
     }
 
     @Override
@@ -84,31 +96,36 @@ public class CloningRecipe implements CraftingRecipe {
     }
 
     @Override
-    public ItemStack getOutput(DynamicRegistryManager registryManager) {
-        return source;
+    public ItemStack getResult(RegistryWrapper.WrapperLookup registriesLookup) {
+        return null;
     }
 
-    @Override
-    public Identifier getId() {
-        return id;
-    }
+//    @Override
+//    public ItemStack getOutput(DynamicRegistryManager registryManager) {
+//        return source;
+//    }
+//
+//    @Override
+//    public Identifier getId() {
+//        return id;
+//    }
 
     @Override
     public RecipeSerializer<?> getSerializer() {
         return LockAndBlock.KEY_CLONING_RECIPE_SERIALIZER;
     }
 
-    @Override
-    public DefaultedList<ItemStack> getRemainder(RecipeInputInventory inventory) {
-        DefaultedList<ItemStack> remainders = DefaultedList.ofSize(inventory.size(), ItemStack.EMPTY);
-
-        for (int i = 0; i < inventory.size(); i++) {
-            ItemStack stack = inventory.getStack(i);
-            if (Item.getRawId(stack.getItem()) == Item.getRawId(source.getItem())) {
-                remainders.set(i, stack.copy());
-            }
-        }
-
-        return remainders;
-    }
+//    @Override
+//    public DefaultedList<ItemStack> getRemainder(RecipeInputInventory inventory) {
+//        DefaultedList<ItemStack> remainders = DefaultedList.ofSize(inventory.size(), ItemStack.EMPTY);
+//
+//        for (int i = 0; i < inventory.size(); i++) {
+//            ItemStack stack = inventory.getStack(i);
+//            if (Item.getRawId(stack.getItem()) == Item.getRawId(source.getItem())) {
+//                remainders.set(i, stack.copy());
+//            }
+//        }
+//
+//        return remainders;
+//    }
 }

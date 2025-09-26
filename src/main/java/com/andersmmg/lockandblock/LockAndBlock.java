@@ -2,6 +2,7 @@ package com.andersmmg.lockandblock;
 
 import com.andersmmg.lockandblock.block.ModBlocks;
 import com.andersmmg.lockandblock.block.custom.KeycardReaderBlock;
+import com.andersmmg.lockandblock.block.custom.KeypadBlock;
 import com.andersmmg.lockandblock.block.entity.KeycardReaderBlockEntity;
 import com.andersmmg.lockandblock.block.entity.KeypadBlockEntity;
 import com.andersmmg.lockandblock.block.entity.ModBlockEntities;
@@ -13,10 +14,12 @@ import com.andersmmg.lockandblock.recipe.CloningRecipeSerializer;
 import com.andersmmg.lockandblock.record.KeycardReaderPacket;
 import com.andersmmg.lockandblock.record.KeypadCodePacket;
 import com.andersmmg.lockandblock.sounds.ModSounds;
+import com.mojang.serialization.Codec;
 import io.wispforest.owo.network.OwoNetChannel;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.component.ComponentType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.recipe.RecipeSerializer;
@@ -39,7 +42,17 @@ public class LockAndBlock implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final ModConfig CONFIG = ModConfig.createAndLoad();
     public static final String CARD_UUID_KEY = "card_uuid";
+    public static final ComponentType<String> CARD_UUID_COMPONENT = Registry.register(
+            Registries.DATA_COMPONENT_TYPE,
+            Identifier.of(LockAndBlock.MOD_ID, "card_uuid"),
+            ComponentType.<String>builder().codec(Codec.STRING).build()
+    );
     public static final String KEY_UUID_KEY = "key_uuid";
+    public static final ComponentType<String> KEY_UUID_COMPONENT = Registry.register(
+            Registries.DATA_COMPONENT_TYPE,
+            Identifier.of(LockAndBlock.MOD_ID, "key_uuid"),
+            ComponentType.<String>builder().codec(Codec.STRING).build()
+    );
     public static final String DETONATOR_PAIR_KEY = "paired_blocks";
     public static final BooleanProperty SET = BooleanProperty.of("set");
     public static final IntProperty DISTANCE = IntProperty.of("distance", 0, 255);
@@ -48,13 +61,13 @@ public class LockAndBlock implements ModInitializer {
     public static final OwoNetChannel KEYPAD_CODE_CHANNEL = OwoNetChannel.create(id("keypad_code"));
 
     public static final RecipeSerializer<CloningRecipe> KEY_CLONING_RECIPE_SERIALIZER =
-            Registry.register(Registries.RECIPE_SERIALIZER, new Identifier(LockAndBlock.MOD_ID, "cloning"), new CloningRecipeSerializer());
+            Registry.register(Registries.RECIPE_SERIALIZER, Identifier.of(LockAndBlock.MOD_ID, "cloning"), new CloningRecipeSerializer());
 
     public static final RegistryKey<DamageType> TESLA_COIL_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, id("tesla_coil_damage_type"));
     public static final RegistryKey<DamageType> LASER_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, id("laser_damage_type"));
 
     public static Identifier id(String path) {
-        return new Identifier(MOD_ID, path);
+        return Identifier.of(MOD_ID, path);
     }
 
     public static MutableText langText(String key) {
@@ -111,12 +124,12 @@ public class LockAndBlock implements ModInitializer {
                         break;
                     case TOGGLE_ON:
                         if (keypadBlockEntity.testCode(message.code(), false)) {
-                            world.setBlockState(pos, state.with(KeycardReaderBlock.TOGGLE, true));
+                            world.setBlockState(pos, state.with(KeypadBlock.TOGGLE, true));
                         }
                         break;
                     case TOGGLE_OFF:
                         if (keypadBlockEntity.testCode(message.code(), false)) {
-                            world.setBlockState(pos, state.with(KeycardReaderBlock.TOGGLE, false));
+                            world.setBlockState(pos, state.with(KeypadBlock.TOGGLE, false));
                         }
                         break;
                 }

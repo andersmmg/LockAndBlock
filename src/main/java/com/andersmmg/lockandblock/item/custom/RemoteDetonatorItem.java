@@ -3,34 +3,69 @@ package com.andersmmg.lockandblock.item.custom;
 import com.andersmmg.lockandblock.LockAndBlock;
 import com.andersmmg.lockandblock.block.custom.DetonatorMineBlock;
 import com.andersmmg.lockandblock.item.ModItems;
-import net.minecraft.client.item.TooltipContext;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.component.ComponentType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeableItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class RemoteDetonatorItem extends Item implements DyeableItem {
+public class RemoteDetonatorItem extends Item {
+    public record PairedPositions(List<BlockPos> positions) {
+        public static final Codec<PairedPositions> CODEC = RecordCodecBuilder.create(instance -> 
+            instance.group(
+                BlockPos.CODEC.listOf().fieldOf("positions").forGetter(PairedPositions::positions)
+            ).apply(instance, PairedPositions::new)
+        );
+    }
+
+    public static final ComponentType<PairedPositions> PAIRED_POSITIONS = Registry.register(
+        Registries.DATA_COMPONENT_TYPE,
+        Identifier.of(LockAndBlock.MOD_ID, "paired_positions"),
+        ComponentType.<PairedPositions>builder().codec(PairedPositions.CODEC).build()
+    );
+
     public RemoteDetonatorItem(Settings settings) {
         super(settings);
     }
 
     public static boolean isPaired(ItemStack stack) {
-        if (!stack.isOf(ModItems.REMOTE_DETONATOR) || !stack.hasNbt()) return false;
-        assert stack.getNbt() != null;
-        return stack.getNbt().contains(LockAndBlock.DETONATOR_PAIR_KEY);
+        if (!stack.isOf(ModItems.REMOTE_DETONATOR)) {
+            return false;
+        }
+        PairedPositions pairedPositions = stack.get(PAIRED_POSITIONS);
+        return pairedPositions != null && !pairedPositions.positions().isEmpty();
+    }
+
+    private static List<BlockPos> getPairedPositions(ItemStack stack) {
+        if (!stack.isOf(ModItems.REMOTE_DETONATOR)) {
+            return new ArrayList<>();
+        }
+        PairedPositions pairedPositions = stack.get(PAIRED_POSITIONS);
+        return pairedPositions != null ? new ArrayList<>(pairedPositions.positions()) : new ArrayList<>();
+    }
+
+    private static void addPairedPosition(ItemStack stack, BlockPos pos) {
+        if (!stack.isOf(ModItems.REMOTE_DETONATOR)) {
+            return;
+        }
+        
+        List<BlockPos> positions = new ArrayList<>(getPairedPositions(stack));
+        if (!positions.contains(pos)) {
+            positions.add(pos);
+            stack.set(PAIRED_POSITIONS, new PairedPositions(positions));
+        }
     }
 
     @Override
@@ -44,17 +79,17 @@ public class RemoteDetonatorItem extends Item implements DyeableItem {
             PlayerEntity player = context.getPlayer();
             ItemStack stack = context.getStack();
 
-            long[] pairs = stack.getOrCreateNbt().getLongArray(LockAndBlock.DETONATOR_PAIR_KEY);
-            ArrayList<Long> list = new ArrayList<>(Arrays.stream(pairs).boxed().toList());
-            if (!list.contains(pos.asLong())) {
-                list.add(pos.asLong());
-                pairs = list.stream().mapToLong(Long::longValue).toArray();
-                stack.getOrCreateNbt().putLongArray(LockAndBlock.DETONATOR_PAIR_KEY, pairs);
+            // Get current positions
+            List<BlockPos> positions = getPairedPositions(stack);
+            
+            // Check if position is already paired
+            if (positions.stream().noneMatch(p -> p.equals(pos))) {
+                // Add new position
+                addPairedPosition(stack, pos);
                 world.setBlockState(pos, world.getBlockState(pos).with(DetonatorMineBlock.SET, true), 3);
 
                 assert player != null;
                 player.sendMessage(LockAndBlock.langText("detonator.pair_added"), true);
-
                 return ActionResult.SUCCESS;
             }
         }
@@ -67,26 +102,33 @@ public class RemoteDetonatorItem extends Item implements DyeableItem {
             return TypedActionResult.fail(user.getStackInHand(hand));
         }
         if (!user.isSneaking()) {
-            if (isPaired(user.getStackInHand(hand))) {
-                long[] pairs = user.getStackInHand(hand).getOrCreateNbt().getLongArray(LockAndBlock.DETONATOR_PAIR_KEY);
-                for (long pair : pairs) {
-                    BlockPos pos = BlockPos.fromLong(pair);
-                    if (world.getBlockState(pos).getBlock() instanceof DetonatorMineBlock) {
-                        ((DetonatorMineBlock) world.getBlockState(pos).getBlock()).detonate(world, pos);
-                    }
+            ItemStack stack = user.getStackInHand(hand);
+            if (isPaired(stack)) {
+                List<BlockPos> positions = getPairedPositions(stack);
+                if (!positions.isEmpty()) {
+                    // Process detonations
+                    positions.stream()
+                        .filter(pos -> world.getBlockState(pos).getBlock() instanceof DetonatorMineBlock)
+                        .forEach(pos -> ((DetonatorMineBlock) world.getBlockState(pos).getBlock()).detonate(world, pos));
+                    
+                    user.sendMessage(Text.translatable("text." + LockAndBlock.MOD_ID + "." + "detonator.detonated", positions.size()), true);
+                    
+                    // Clear the pairs after detonation
+                    stack.remove(PAIRED_POSITIONS);
+                } else {
+                    user.sendMessage(Text.translatable("text." + LockAndBlock.MOD_ID + "." + "detonator.no_mines"), true);
                 }
-                user.sendMessage(Text.translatable("text." + LockAndBlock.MOD_ID + "." + "detonator.detonated", pairs.length), true);
-                user.getStackInHand(hand).removeSubNbt(LockAndBlock.DETONATOR_PAIR_KEY);
             }
         }
         return super.use(world, user, hand);
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+        super.appendTooltip(stack, context, tooltip, type);
         if (isPaired(stack)) {
-            tooltip.add(LockAndBlock.langText("detonator.paired").formatted(Formatting.GOLD));
+            int count = getPairedPositions(stack).size();
+            tooltip.add(Text.translatable("text." + LockAndBlock.MOD_ID + ".detonator.paired_mines", count).formatted(Formatting.GOLD));
         }
     }
 }

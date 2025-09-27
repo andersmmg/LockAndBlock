@@ -51,10 +51,6 @@ public class LockBlockEntity extends BlockEntity {
         return false;
     }
 
-    public void clearUuid() {
-        this.uuid = "";
-    }
-
     @Nullable
     @Override
     public Packet<ClientPlayPacketListener> toUpdatePacket() {

@@ -1,7 +1,6 @@
 package com.andersmmg.lockandblock.item.custom;
 
 import com.andersmmg.lockandblock.LockAndBlock;
-import com.andersmmg.lockandblock.item.ModItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
@@ -17,7 +16,7 @@ public class KeyItem extends Item {
 
 
     public static boolean hasUuid(ItemStack stack) {
-        return stack.isOf(ModItems.KEYCARD) && stack.get(LockAndBlock.KEY_UUID_COMPONENT) != null;
+        return stack.contains(LockAndBlock.KEY_UUID_COMPONENT);
     }
 
     public static String getUuid(ItemStack stack) {

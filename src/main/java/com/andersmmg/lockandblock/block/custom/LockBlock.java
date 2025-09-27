@@ -64,7 +64,6 @@ public class LockBlock extends BlockWithEntity {
                         return this.activate(state, world, pos);
                     } else {
                         if (!world.isClient) {
-//                            world.playSound(null, pos, ModSounds.BEEP_ERROR, SoundCategory.BLOCKS, 1.0F, 1.0F);
                             player.sendMessage(LockAndBlock.langText("wrong_key"), true);
                         }
                     }
@@ -79,7 +78,6 @@ public class LockBlock extends BlockWithEntity {
                     } else {
                         if (!world.isClient) {
                             // encode both
-                            // TODO: not working even though keycards work?
                             String new_uuid = java.util.UUID.randomUUID().toString();
                             KeyItem.setUuid(new_uuid, stack);
                             lockBlockEntity.setUuid(new_uuid);

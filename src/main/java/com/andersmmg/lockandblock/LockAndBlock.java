@@ -25,7 +25,6 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.IntProperty;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -39,20 +38,13 @@ public class LockAndBlock implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final ModConfig CONFIG = ModConfig.createAndLoad();
     public static final String CARD_UUID_KEY = "card_uuid";
-    public static final ComponentType<String> CARD_UUID_COMPONENT = Registry.register(
-            Registries.DATA_COMPONENT_TYPE,
-            Identifier.of(LockAndBlock.MOD_ID, "card_uuid"),
-            ComponentType.<String>builder().codec(Codec.STRING).build()
-    );
     public static final String KEY_UUID_KEY = "key_uuid";
     public static final ComponentType<String> KEY_UUID_COMPONENT = Registry.register(
             Registries.DATA_COMPONENT_TYPE,
             Identifier.of(LockAndBlock.MOD_ID, "key_uuid"),
             ComponentType.<String>builder().codec(Codec.STRING).build()
     );
-    public static final String DETONATOR_PAIR_KEY = "paired_blocks";
     public static final BooleanProperty SET = BooleanProperty.of("set");
-    public static final IntProperty DISTANCE = IntProperty.of("distance", 0, 255);
 
     public static final OwoNetChannel KEYCARD_READER_CHANNEL = OwoNetChannel.create(id("keycard_reader"));
     public static final OwoNetChannel KEYPAD_CODE_CHANNEL = OwoNetChannel.create(id("keypad_code"));

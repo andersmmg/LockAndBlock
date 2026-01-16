@@ -6,10 +6,12 @@ import com.andersmmg.lockandblock.item.ModItems;
 import com.andersmmg.lockandblock.item.custom.KeyItem;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -30,7 +32,12 @@ public class ReinforcedIronDoorBlock extends DoorBlock implements BlockEntityPro
         }
         ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
         if (stack.isOf(ModItems.KEY)) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
+            BlockEntity blockEntity;
+            if (state.get(Properties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER) {
+                blockEntity = world.getBlockEntity(pos.down());
+            } else {
+                blockEntity = world.getBlockEntity(pos);
+            }
             if (blockEntity instanceof LockBlockEntity lockBlockEntity) {
                 if (lockBlockEntity.hasUuid()) {
                     if (lockBlockEntity.checkKey(stack)) {

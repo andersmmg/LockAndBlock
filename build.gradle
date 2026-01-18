@@ -8,7 +8,7 @@ plugins {
     id 'org.jetbrains.changelog' version '2.2.0'
 }
 
-version = project.mod_version
+version = project.mod_version + "+" + project.minecraft_version
 group = project.maven_group
 
 base {
@@ -129,7 +129,7 @@ modrinth {
     syncBodyFrom = rootProject.file("README.md").text
     changelog = project.changelog.renderItem(project.changelog.getLatest(), Changelog.OutputType.MARKDOWN)
     tasks.modrinth.dependsOn(tasks.modrinthSyncBody)
-    versionName = "${project.mod_version}+${project.minecraft_version} ${project.mod_name}"
+    versionName = "${project.archives_base_name}-${project.minecraft_version}-${project.mod_version}"
     dependencies {
         required.project "fabric-api"
         required.project "owo-lib"
@@ -142,10 +142,10 @@ githubRelease {
     token = GITHUB_TOKEN
     owner = "andersmmg"
     draft = false
-    releaseName = "${mod_version}+${minecraft_version}"
+    releaseName = mod_name + " " + version
     body = project.changelog.renderItem(project.changelog.getLatest(), Changelog.OutputType.MARKDOWN)
     releaseAssets = remapJar
-    allowUploadToExisting = false
+    allowUploadToExisting = true
     dryRun = true
 }
 

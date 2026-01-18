@@ -15,6 +15,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
+## [0.10.1] - 2026-01-17
+
+### Changed
+
+- Updated version scheme to better support multiple Minecraft versions
+
 ## [0.10.0] - 2026-01-16
 
 ### Fixed
@@ -185,8 +191,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Keycard writer
 - Keycard cloner
 
-[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.10.0...HEAD
+[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.10.1...HEAD
 
+[0.10.1]: https://github.com/andersmmg/LockAndBlock/compare/v0.10.0...v0.10.1
 [0.10.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.9.0...v0.10.0
 [0.9.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.7.1...v0.8.0

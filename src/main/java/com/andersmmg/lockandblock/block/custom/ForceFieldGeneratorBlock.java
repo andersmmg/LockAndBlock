@@ -24,7 +24,7 @@ import net.minecraft.world.tick.TickPriority;
 import org.jetbrains.annotations.Nullable;
 
 public class ForceFieldGeneratorBlock extends Block {
-    public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
+    public static final DirectionProperty FACING = Properties.FACING;
     public static final BooleanProperty POWERED = Properties.POWERED;
 
     public ForceFieldGeneratorBlock(Settings settings) {
@@ -115,6 +115,6 @@ public class ForceFieldGeneratorBlock extends Block {
 
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+        return this.getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite());
     }
 }

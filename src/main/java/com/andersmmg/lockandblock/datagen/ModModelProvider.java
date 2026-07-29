@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.data.client.*;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Direction;
 
 public class ModModelProvider extends FabricModelProvider {
     public ModModelProvider(FabricDataOutput output) {
@@ -78,7 +79,17 @@ public class ModModelProvider extends FabricModelProvider {
         Identifier identifier3 = modelFactory.get(block).textures((textures) -> textures.put(TextureKey.FRONT, identifier2)).upload(block, "_on", blockStateModelGenerator.modelCollector);
         blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block)
                 .coordinate(BlockStateModelGenerator.createBooleanModelMap(Properties.POWERED, identifier3, identifier))
-                .coordinate(BlockStateModelGenerator.createNorthDefaultHorizontalRotationStates()));
+                .coordinate(createAllDirectionRotationStates()));
+    }
+
+    private static BlockStateVariantMap createAllDirectionRotationStates() {
+        return BlockStateVariantMap.create(Properties.FACING)
+                .register(Direction.NORTH, BlockStateVariant.create())
+                .register(Direction.SOUTH, BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R180))
+                .register(Direction.EAST, BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R90))
+                .register(Direction.WEST, BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R270))
+                .register(Direction.UP, BlockStateVariant.create().put(VariantSettings.X, VariantSettings.Rotation.R270))
+                .register(Direction.DOWN, BlockStateVariant.create().put(VariantSettings.X, VariantSettings.Rotation.R90));
     }
 
     private void registerMine(BlockStateModelGenerator blockStateModelGenerator, Block block) {
